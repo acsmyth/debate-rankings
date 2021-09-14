@@ -3,7 +3,7 @@ from datetime import datetime
 import copy
 
 def time_of_round(r1):
-  date_obj = datetime.strptime(r1['date'], '%m/%d/%Y')
+  date_obj = datetime.strptime(r1['date'], '%Y-%m-%d')
   round_order = [
     'Round 1',
     'Round 2',
@@ -109,6 +109,7 @@ class EloSystem:
           'debater_b_code': rnd['opponent_code'],
           'result': rnd['result'],
           'tournament_id': round_data['tournament_id'],
+          'tournament_name': round_data['tournament_name'],
           'date': round_data['date']
         }
         rounds.append(round_info)
@@ -147,9 +148,7 @@ class EloSystem:
     else:
       actual_a = 1 if round_data['result'] == 'W' else 0
       actual_b = 0 if round_data['result'] == 'W' else 1
-    
-    # TODO: take into account elim rounds - weight K higher and count percent of ballots
-    # won as the "score"
+
     r_a_new = r_a + K*(actual_a - expected_a)
     r_b_new = r_b + K*(actual_b - expected_b)
     debater_a.set_rating(r_a_new)
