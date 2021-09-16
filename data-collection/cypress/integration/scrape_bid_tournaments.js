@@ -1,15 +1,19 @@
-import { contains, exists } from "../../custom_commands";
+const startYMD = Cypress.env("start");
+const endYMD = Cypress.env("end");
 
 const varsityLdNames = [
   "Varsity Lincoln Douglas",
   "Varsity Lincoln-Douglas",
   "Varsity LD",
+  "LD Varsity",
   "VLD",
   "Lincoln-Douglas Debate",
   "Lincoln-Douglas",
   "Lincoln Douglas",
   "LD",
   "OLD",
+  "TOC LD",
+  "Lincoln Douglas - TOC",
 ];
 
 let entryUrls = {};
@@ -21,8 +25,9 @@ const getEntryIdFromUrl = (url) => {
 
 describe("Scrape Tournament Pages", () => {
   it("Scrape", () => {
-    cy.readFile("bid_tournament_ids_2018-08-01___2019-08-01.json").each(
-      (id) => {
+    cy.readFile(`tabroom/bid_tournament_ids_${startYMD}___${endYMD}.json`).each(
+      (tournamentData) => {
+        const id = tournamentData.id;
         entryUrls[id] = [];
         cy.wait(2000);
         cy.visit(
@@ -58,7 +63,6 @@ describe("Scrape Tournament Pages", () => {
                 if (
                   Cypress.$('a[class="chosen-single"] > span').text() !== ldName
                 ) {
-                  // console.log("CLICKING AGAIN " + Math.random());
                   cy.get("li")
                     .contains(new RegExp("^" + ldName + "$", "g"))
                     .click({ force: true });
@@ -73,6 +77,9 @@ describe("Scrape Tournament Pages", () => {
           });
       }
     );
-    cy.writeFile("tournament_entry_ids.json", entryUrls);
+    cy.writeFile(
+      `tabroom/tournament_entry_ids_${startYMD}___${endYMD}.json`,
+      entryUrls
+    );
   });
 });

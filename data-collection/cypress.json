@@ -1,3 +1,4 @@
 {
-  "redirectionLimit": 100000000000
+  "redirectionLimit": 100000000000,
+  "video": false
 }

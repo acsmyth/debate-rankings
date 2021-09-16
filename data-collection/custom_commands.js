@@ -1,10 +1,17 @@
 export const exists = async (selector) => {
   cy.document().then(($document) => {
     const res = $document.querySelectorAll(selector);
-    console.log(res);
-    console.log('exists: ' + !!res.length);
+    // console.log(res);
+    // console.log('exists: ' + !!res.length);
     return !!res.length;
   });
+};
+
+export const contains = (searchText) => {
+  const res = Cypress.$(`div:contains('${searchText}')`);
+  console.log("CONTAINS:");
+  console.log(!!res.length ? "true" : "false");
+  return !!res.length;
 };
 
 // export const contains = (searchText) => {

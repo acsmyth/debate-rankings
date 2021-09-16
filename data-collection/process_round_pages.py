@@ -1,14 +1,28 @@
 import os
 import json
+import sys
+import copy
+import sqlite3
 from lxml import html, etree
 from elo import EloSystem
-import sqlite3
 
+start = '2020-08-01'
+end = '2021-08-01'
 
-with open('tournament_entry_ids.json', 'r', encoding='utf-8') as file:
+args = copy.deepcopy(sys.argv[1:])
+for arg in args:
+  parts = arg.split('=')
+  key = parts[0]
+  value = parts[1]
+  if key == 'start':
+    start = value
+  elif key == 'end':
+    end = value
+
+with open(f'tabroom/tournament_entry_ids_{start}___{end}.json', 'r', encoding='utf-8') as file:
   entries_str = file.read()
 
-with open('bid_tournament_ids_2018-08-01___2019-08-01.json', 'r', encoding='utf-8') as file:
+with open(f'tabroom/bid_tournament_ids_{start}___{end}.json', 'r', encoding='utf-8') as file:
   tournament_data_str = file.read()
 tournament_data = json.loads(tournament_data_str)
 
@@ -16,12 +30,14 @@ results_data = []
 
 entries_data = json.loads(entries_str)
 for tournament_id in entries_data:
+  if tournament_id == '16799':
+    continue
   date = next(e['date'] for e in tournament_data if e['id'] == int(tournament_id))
   name = next(e['name'] for e in tournament_data if e['id'] == int(tournament_id))
   for entry_id in entries_data[tournament_id]:
-    if not os.path.exists(f'round_data/tournament_{tournament_id}/entry_{entry_id}.html'):
+    if not os.path.exists(f'round_data/{start}___{end}/tournament_{tournament_id}/entry_{entry_id}.html'):
       continue
-    with open(f'round_data/tournament_{tournament_id}/entry_{entry_id}.html', 'rb') as file:
+    with open(f'round_data/{start}___{end}/tournament_{tournament_id}/entry_{entry_id}.html', 'rb') as file:
       page_str = file.read().decode('utf-8')
     tree = html.fromstring(page_str)
     
@@ -123,48 +139,39 @@ def table_exists(table, cur):
                                     WHERE type='table'
                                     AND name='{table}';''')][0][0] == 1
 
-# con = sqlite3.connect('debate.db')
-# cur = con.cursor()
+con = sqlite3.connect('debate.db')
+cur = con.cursor()
 
 # store rankings
-# if table_exists('rankings', cur):
-#   if table_exists('rankings_backup', cur):
-#     cur.execute('DELETE FROM rankings_backup')
-#   else:
-#     cur.execute('''CREATE TABLE rankings_backup
-#                    (code, name, school, elo, num_rounds, confidence, winrate)''')
-#   cur.execute('INSERT INTO rankings_backup SELECT * FROM rankings')
-#   cur.execute('DELETE FROM rankings')
-# else:
-#   cur.execute('''CREATE TABLE rankings
-#                  (code, name, school, elo, num_rounds, confidence, winrate)''')
-# cur.execute(f'INSERT INTO rankings VALUES {tierlist_str}')
-# con.commit()
+if table_exists('rankings', cur):
+  if table_exists('rankings_backup', cur):
+    cur.execute('DELETE FROM rankings_backup')
+  else:
+    cur.execute('''CREATE TABLE rankings_backup
+                   (code, name, school, elo, num_rounds, confidence, winrate)''')
+  cur.execute('INSERT INTO rankings_backup SELECT * FROM rankings')
+  cur.execute('DELETE FROM rankings')
+else:
+  cur.execute('''CREATE TABLE rankings
+                 (code, name, school, elo, num_rounds, confidence, winrate)''')
+cur.execute(f'INSERT INTO rankings VALUES {tierlist_str}')
+con.commit()
 
-# # print(tierlist_str[:500])
+# store round info
+if table_exists('rounds', cur):
+  # print('got here 1')
+  if table_exists('rounds_backup', cur):
+    cur.execute('DELETE FROM rounds_backup')
+  else:
+    cur.execute('''CREATE TABLE rounds_backup
+                   (round, debater_a_code, debater_a_name, debater_a_school, debater_b_code, result, tournament_id, tournament_name, date)''')
+  cur.execute('INSERT INTO rounds_backup SELECT * FROM rounds')
+  cur.execute('DELETE FROM rounds')
+else:
+  # print('got here 2')
+  cur.execute('''CREATE TABLE rounds
+                 (round, debater_a_code, debater_a_name, debater_a_school, debater_b_code, result, tournament_id, tournament_name, date)''')
+cur.execute(f'INSERT INTO rounds VALUES {rounds_str}')
 
-# # store debater info
-# if table_exists('rounds', cur):
-#   # print('got here 1')
-#   if table_exists('rounds_backup', cur):
-#     cur.execute('DELETE FROM rounds_backup')
-#   else:
-#     cur.execute('''CREATE TABLE rounds_backup
-#                    (round, debater_a_code, debater_a_name, debater_a_school, debater_b_code, result, tournament_id, tournament_name, date)''')
-#   cur.execute('INSERT INTO rounds_backup SELECT * FROM rounds')
-#   cur.execute('DELETE FROM rounds')
-# else:
-#   # print('got here 2')
-#   cur.execute('''CREATE TABLE rounds
-#                  (round, debater_a_code, debater_a_name, debater_a_school, debater_b_code, result, tournament_id, tournament_name, date)''')
-# cur.execute(f'INSERT INTO rounds VALUES {rounds_str}')
-
-# con.commit()
-
-# # print(len(list(cur.execute('SELECT * FROM rankings'))))
-# # print(len(list(cur.execute('SELECT * FROM rounds'))))
-# # print(len(list(cur.execute('SELECT * FROM rankings_backup'))))
-# # print(len(list(cur.execute('SELECT * FROM rounds_backup'))))
-
-
-# con.close()
+con.commit()
+con.close()
