@@ -1,0 +1,47 @@
+.round_row {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  height: 75px;
+  border-radius: 5%;
+}
+
+.result, .round_name, .date  {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 200px;
+  display: flex;
+  overflow: hidden;
+}
+
+.result {
+  width: 160px;
+}
+
+.result, .round_name {
+  margin-right: 0px;
+}
+
+.tournament_name {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 400px;
+  display: flex;
+  overflow: hidden;
+  text-align: left;
+}
+
+.round_row a {
+  margin: auto;
+  width: 400px;
+  display: flex;
+  text-align: left;
+}
+
+.round_row a:hover {
+  color: grey;
+}

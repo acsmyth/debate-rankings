@@ -1,0 +1,28 @@
+.header {
+  height: 70px;
+  background-color: black;
+  margin: 0px;
+}
+
+header ul {
+  height: 100%;
+}
+
+.header ul li {
+  color: white;
+  list-style-type: none;
+  display: inline;
+  margin: 5px;
+  height: 100%;
+  position: relative;
+}
+
+.header ul li:hover {
+  background-color: rgb(30,30,30);
+}
+
+.header img {
+  position: absolute;
+  right: 12px;
+  top: 17px;
+}
