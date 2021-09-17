@@ -1,0 +1,6 @@
+#!/bin/bash
+
+npm run build --prefix site/client
+serve -s site/client/build &
+npm start --prefix site/server &
+wait
