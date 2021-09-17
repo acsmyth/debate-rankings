@@ -34,21 +34,22 @@ class DebaterPage extends React.Component {
   }
   
   componentDidMount() {
+    const domain = window.location.origin;
     const codeParam = new URLSearchParams(window.location.search).get("code");
-    fetch(`http://localhost:3001/users/get_rounds?code=${codeParam}`)
+    fetch(`${domain}:3001/users/get_rounds?code=${codeParam}`)
       .then((res) => res.json())
       .then((rounds) => {
         rounds.reverse();
         this.setState({ rounds, loading: this.state.loading + 1 });
         this.loaded();
       });
-    fetch("http://localhost:3001/users/rankings")
+    fetch(`${domain}:3001/users/rankings`)
       .then((res) => res.json())
       .then((rankings) => {
         this.setState({ rankings });
         this.loaded();
       });
-    fetch(`http://localhost:3001/users/get_debater?code=${codeParam}`)
+    fetch(`${domain}:3001/users/get_debater?code=${codeParam}`)
       .then((res) => res.json())
       .then((debater) => {
         this.setState({ debater });
