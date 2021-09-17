@@ -1,5 +1,8 @@
 #!/bin/bash
 
+npm install --prefix site/client
+npm install --prefix site/server
+
 npm run build --prefix site/client
 serve -s site/client/build &
 npm start --prefix site/server &
