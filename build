@@ -1,0 +1,5 @@
+#!/bin/bash
+
+npm install --prefix site/client
+npm install --prefix site/server
+npm run build --prefix site/client
