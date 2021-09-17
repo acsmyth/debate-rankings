@@ -67,7 +67,7 @@ class RankingsPage extends React.Component {
   ];
 
   componentDidMount() {
-    fetch("/users/rankings")
+    fetch("http://localhost:3001/users/rankings")
       .then((res) => res.json())
       .then((rows) => {
         this.setState({ rows, isLoading: false });
