@@ -67,8 +67,7 @@ class RankingsPage extends React.Component {
   ];
 
   componentDidMount() {
-    const domain = window.location.origin;
-    fetch(`${domain}:3001/users/rankings`)
+    fetch(`https://www.debate-rankings.com/api/users/rankings`)
       .then((res) => res.json())
       .then((rows) => {
         this.setState({ rows, isLoading: false });

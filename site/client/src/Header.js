@@ -7,7 +7,7 @@ class Header extends React.Component {
     return (
       <div className="header">
         <Logo />
-        <a href="https://github.com/ACSmyth/debate-gg" target="_blank">
+        <a href="https://github.com/ACSmyth/debate-rankings" target="_blank">
           <img src="github_logo.svg" width="30" />
         </a>
       </div>
