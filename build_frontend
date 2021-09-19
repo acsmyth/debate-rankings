@@ -1,4 +1,0 @@
-#!/bin/bash
-
-npm install --prefix site/client
-npm run build --prefix site/client
