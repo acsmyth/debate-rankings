@@ -5,7 +5,7 @@ const sqlite3 = require("sqlite3").verbose();
 /* GET users listing. */
 router.get("/rankings", (req, res) => {
   let db = new sqlite3.Database(
-    "/Users/alexsmyth/git/debate-gg/data-collection/debate.db"
+    "../../data-collection/debate.db"
   );
   const sql = `SELECT * FROM rankings WHERE name != '' AND school != ''`;
   db.all(sql, [], (err, rows) => {
@@ -23,7 +23,7 @@ router.get("/rankings", (req, res) => {
 
 router.get("/get_rounds", (req, res) => {
   let db = new sqlite3.Database(
-    "/Users/alexsmyth/git/debate-gg/data-collection/debate.db"
+    "../../data-collection/debate.db"
   );
   let code = "";
   for (char of req.query.code) {
@@ -49,7 +49,7 @@ router.get("/get_rounds", (req, res) => {
 
 router.get("/get_debater", (req, res) => {
   let db = new sqlite3.Database(
-    "/Users/alexsmyth/git/debate-gg/data-collection/debate.db"
+    "../../data-collection/debate.db"
   );
   let code = "";
   for (char of req.query.code) {
