@@ -1,4 +1,0 @@
-#!/bin/bash
-
-serve -s site/client/build &
-npm start --prefix site/server &
