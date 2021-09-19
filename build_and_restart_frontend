@@ -1,0 +1,5 @@
+#!/bin/bash
+
+npm run build --prefix site/client
+sudo systemctl restart nginx
+systemctl status nginx
