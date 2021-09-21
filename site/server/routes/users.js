@@ -4,9 +4,7 @@ var router = express.Router();
 const sqlite3 = require("sqlite3").verbose();
 /* GET users listing. */
 router.get("/rankings", (req, res) => {
-  let db = new sqlite3.Database(
-    "../../data-collection/debate.db"
-  );
+  let db = new sqlite3.Database("../../data-collection/debate.db");
   const sql = `SELECT * FROM rankings WHERE name != '' AND school != ''`;
   db.all(sql, [], (err, rows) => {
     if (err) {
@@ -15,16 +13,13 @@ router.get("/rankings", (req, res) => {
       throw err;
     }
     rows.forEach((row, index) => (row.id = index + 1));
-    // console.log(rows);
     res.json(rows.slice(0, 500));
   });
   db.close();
 });
 
 router.get("/get_rounds", (req, res) => {
-  let db = new sqlite3.Database(
-    "../../data-collection/debate.db"
-  );
+  let db = new sqlite3.Database("../../data-collection/debate.db");
   let code = "";
   for (char of req.query.code) {
     code += char == "_" ? " " : char;
@@ -38,19 +33,13 @@ router.get("/get_rounds", (req, res) => {
       console.log(err.stack);
       throw err;
     }
-    // console.log("xxxxxxxxx");
-    // for (row of rows) {
-    //   console.log(row);
-    // }
     res.json(rows);
   });
   db.close();
 });
 
 router.get("/get_debater", (req, res) => {
-  let db = new sqlite3.Database(
-    "../../data-collection/debate.db"
-  );
+  let db = new sqlite3.Database("../../data-collection/debate.db");
   let code = "";
   for (char of req.query.code) {
     code += char == "_" ? " " : char;

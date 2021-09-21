@@ -22,7 +22,6 @@ class RoundRow extends React.Component {
         </Link>
       );
     } else {
-      console.log(this.props.round.debater_a_code);
       const code = this.props.round.debater_a_code
         .replaceAll("  ", " ")
         .replaceAll(" ", "_");

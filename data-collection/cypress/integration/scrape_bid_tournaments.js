@@ -42,10 +42,8 @@ describe("Scrape Tournament Pages", () => {
             let ldName = false;
             $getResult.each((key) => {
               const element = $getResult[key];
-              // console.log(element);
               varsityLdNames.some((name) => {
                 if (element.innerText == name) {
-                  // console.log("FOUND A MATCH: " + name);
                   ldName = name;
                   return true;
                 }
@@ -55,7 +53,6 @@ describe("Scrape Tournament Pages", () => {
             return ldName;
           })
           .then((ldName) => {
-            // cy.log(ldName);
             cy.get("li")
               .contains(new RegExp("^" + ldName + "$", "g"))
               .click({ force: true })

@@ -33,7 +33,6 @@ describe("Scrape Round Data", () => {
                 date: date[0].innerText,
               });
             });
-          console.log(tournamentData);
         }
       });
     });
