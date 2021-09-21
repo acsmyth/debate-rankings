@@ -13,18 +13,14 @@ class RoundRow extends React.Component {
     if (this.isBye()) return <a />;
     const maybeVs = this.isBye() ? "" : "vs ";
     if (this.isDebaterA()) {
-      const code = this.props.round.debater_b_code
-        .replaceAll("  ", " ")
-        .replaceAll(" ", "_");
+      const code = this.props.round.debater_b_code.replaceAll(" ", "_");
       return (
         <Link to={`/debater?code=${code}`}>
           {maybeVs + this.props.round.debater_b_code}
         </Link>
       );
     } else {
-      const code = this.props.round.debater_a_code
-        .replaceAll("  ", " ")
-        .replaceAll(" ", "_");
+      const code = this.props.round.debater_a_code.replaceAll(" ", "_");
       return (
         <Link to={`/debater?code=${code}`}>
           {maybeVs + this.props.round.debater_a_code}

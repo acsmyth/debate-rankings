@@ -43,7 +43,7 @@ class DebaterPage extends React.Component {
       .then((res) => res.json())
       .then((rounds) => {
         rounds.reverse();
-        this.setState({ rounds, loading: this.state.loading + 1 });
+        this.setState({ rounds });
         this.loaded();
       });
     fetch(`https://www.debate-rankings.com/api/users/rankings`)
