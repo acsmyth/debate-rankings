@@ -80,7 +80,7 @@ class RankingsPage extends React.Component {
       <div className="RankingsPage">
         <Header />
         <h1>Lincoln-Douglas Rankings</h1>
-        <div style={{ height: "580px", width: "70%", margin: "auto" }}>
+        <div style={{ height: "78vh", width: "70%", margin: "auto" }}>
           {!this.state.isLoading && (
             <DataGrid
               rows={this.state.rows}
