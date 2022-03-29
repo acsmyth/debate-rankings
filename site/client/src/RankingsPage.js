@@ -79,7 +79,7 @@ class RankingsPage extends React.Component {
     return (
       <div className="RankingsPage">
         <Header />
-        <h1>Lincoln-Douglas Rankings</h1>
+        <h1>Lincoln-Douglas Debate Rankings</h1>
         <div style={{ height: "78vh", width: "70%", margin: "auto" }}>
           {!this.state.isLoading && (
             <DataGrid
