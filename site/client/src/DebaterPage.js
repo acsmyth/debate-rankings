@@ -2,6 +2,7 @@ import React from "react";
 import RoundRow from "./RoundRow";
 import Header from "./Header";
 import "./DebaterPage.css";
+import { API_BASE_URL } from "./utils";
 
 class DebaterPage extends React.Component {
   state = {
@@ -37,24 +38,20 @@ class DebaterPage extends React.Component {
 
   componentDidMount() {
     const codeParam = new URLSearchParams(window.location.search).get("code");
-    fetch(
-      `https://www.debate-rankings.com/api/users/get_rounds?code=${codeParam}`
-    )
+    fetch(`${API_BASE_URL}/users/get_rounds?code=${codeParam}`)
       .then((res) => res.json())
       .then((rounds) => {
         rounds.reverse();
         this.setState({ rounds });
         this.loaded();
       });
-    fetch(`https://www.debate-rankings.com/api/users/rankings`)
+    fetch(`${API_BASE_URL}/users/rankings`)
       .then((res) => res.json())
       .then((rankings) => {
         this.setState({ rankings });
         this.loaded();
       });
-    fetch(
-      `https://www.debate-rankings.com/api/users/get_debater?code=${codeParam}`
-    )
+    fetch(`${API_BASE_URL}/users/get_debater?code=${codeParam}`)
       .then((res) => res.json())
       .then((debater) => {
         this.setState({ debater });

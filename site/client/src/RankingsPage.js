@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import Header from "./Header";
 import "./RankingsPage.css";
+import { API_BASE_URL } from "./utils";
 
 class RankingsPage extends React.Component {
   state = {
@@ -67,7 +68,7 @@ class RankingsPage extends React.Component {
   ];
 
   componentDidMount() {
-    fetch(`https://www.debate-rankings.com/api/users/rankings`)
+    fetch(`${API_BASE_URL}/users/rankings`)
       .then((res) => res.json())
       .then((rows) => {
         this.setState({ rows, isLoading: false });
@@ -78,7 +79,7 @@ class RankingsPage extends React.Component {
     return (
       <div className="RankingsPage">
         <Header />
-        <h1>2020-2021 Lincoln-Douglas Rankings</h1>
+        <h1>Lincoln-Douglas Rankings</h1>
         <div style={{ height: "580px", width: "70%", margin: "auto" }}>
           {!this.state.isLoading && (
             <DataGrid
