@@ -39,13 +39,13 @@ class RoundRow extends React.Component {
   getResultWithColor = () => {
     const result = this.getResult();
     if (result === "Bye") {
-      return <span style={{ color: "green" }}>Bye</span>;
+      return <span style={{ color: "darkgreen" }}>Bye</span>;
     }
     const withoutCommas = result
       .replaceAll(" ", "")
       .split(",")
       .map((res) => {
-        const color = res === "W" ? "green" : "red";
+        const color = res === "W" ? "darkgreen" : "crimson";
         return <span style={{ color: color }}>{res}</span>;
       });
     const res = [];
