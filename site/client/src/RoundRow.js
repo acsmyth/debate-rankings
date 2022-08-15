@@ -38,27 +38,28 @@ class RoundRow extends React.Component {
 
   getResultWithColor = () => {
     const result = this.getResult();
-    const whoWon = this.getWinnerFromResult(result);
-    let color;
-    if (whoWon === true) {
-      color = "green";
-    } else if (whoWon === false) {
-      color = "red";
-    } else {
-      color = "gray";
-    }
-    return <span style={{ color: color, opacity: "50%" }}>{result}</span>;
-  };
-
-  getWinnerFromResult = (result) => {
     if (result === "Bye") {
-      return true;
+      return <span style={{ color: "green" }}>Bye</span>;
     }
-    result = result.replaceAll(" ", "");
-    const rounds = result.split(",");
-    const numWins = rounds.filter((res) => res === "W").length;
-    const numLosses = rounds.filter((res) => res === "L").length;
-    return numWins >= numLosses;
+    const withoutCommas = result
+      .replaceAll(" ", "")
+      .split(",")
+      .map((res) => {
+        const color = res === "W" ? "green" : "red";
+        return <span style={{ color: color }}>{res}</span>;
+      });
+    const res = [];
+    let first = true;
+    withoutCommas.forEach((element) => {
+      if (first) {
+        first = false;
+      } else {
+        res.push(",");
+        res.push(<>&nbsp;</>);
+      }
+      res.push(element);
+    });
+    return res;
   };
 
   sameResult = (result) => {
