@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Header from "./Header";
 import "./RoundRow.css";
 
 class RoundRow extends React.Component {
@@ -35,6 +34,31 @@ class RoundRow extends React.Component {
     } else {
       return this.oppositeResult(this.props.round.result);
     }
+  };
+
+  getResultWithColor = () => {
+    const result = this.getResult();
+    const whoWon = this.getWinnerFromResult(result);
+    let color;
+    if (whoWon === true) {
+      color = "green";
+    } else if (whoWon === false) {
+      color = "red";
+    } else {
+      color = "gray";
+    }
+    return <span style={{ color: color, opacity: "50%" }}>{result}</span>;
+  };
+
+  getWinnerFromResult = (result) => {
+    if (result === "Bye") {
+      return true;
+    }
+    result = result.replaceAll(" ", "");
+    const rounds = result.split(",");
+    const numWins = rounds.filter((res) => res === "W").length;
+    const numLosses = rounds.filter((res) => res === "L").length;
+    return numWins >= numLosses;
   };
 
   sameResult = (result) => {
@@ -78,7 +102,7 @@ class RoundRow extends React.Component {
         className="round_row"
         style={{ backgroundColor: this.getBackgroundColor() }}
       >
-        <span className="result">{this.getResult()}</span>
+        <span className="result">{this.getResultWithColor()}</span>
         {this.getOpponent()}
         <span className="round_name">{this.props.round.round}</span>
         <span className="tournament_name">
