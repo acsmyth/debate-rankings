@@ -1,9 +1,9 @@
-import React from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
-import Header from "./Header";
-import "./RankingsPage.css";
-import { API_BASE_URL } from "./utils";
+import React from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import { Link } from 'react-router-dom';
+import Header from './Header';
+import './RankingsPage.css';
+import { API_BASE_URL } from './utils';
 
 class RankingsPage extends React.Component {
   state = {
@@ -15,43 +15,41 @@ class RankingsPage extends React.Component {
 
   columns = [
     {
-      headerName: "Rank",
-      field: "id",
+      headerName: 'Rank',
+      field: 'id',
       flex: 0.7,
       renderHeader: this.renderBold,
     },
     {
-      headerName: "Code",
-      field: "code",
+      headerName: 'Code',
+      field: 'code',
       flex: 1.7,
       renderHeader: this.renderBold,
       renderCell: (params) => (
-        <Link to={`/debater?code=${params.value.replaceAll(" ", "_")}`}>
-          {params.value}
-        </Link>
+        <Link to={`/debater?code=${params.value.replaceAll(' ', '_')}`}>{params.value}</Link>
       ),
     },
     {
-      headerName: "Name",
-      field: "name",
+      headerName: 'Name',
+      field: 'name',
       flex: 1.1,
       renderHeader: this.renderBold,
     },
     {
-      headerName: "School",
-      field: "school",
+      headerName: 'School',
+      field: 'school',
       flex: 0.9,
       renderHeader: this.renderBold,
     },
     {
-      headerName: "Elo",
-      field: "elo",
+      headerName: 'Elo',
+      field: 'elo',
       flex: 0.75,
       renderHeader: this.renderBold,
     },
     {
-      headerName: "Win %",
-      field: "winrate",
+      headerName: 'Win %',
+      field: 'winrate',
       flex: 0.9,
       renderHeader: this.renderBold,
       valueFormatter: (params) => {
@@ -60,8 +58,8 @@ class RankingsPage extends React.Component {
       },
     },
     {
-      headerName: "# Rounds",
-      field: "num_rounds",
+      headerName: '# Rounds',
+      field: 'num_rounds',
       flex: 0.9,
       renderHeader: this.renderBold,
     },
@@ -78,15 +76,11 @@ class RankingsPage extends React.Component {
   render() {
     return (
       <div className="RankingsPage">
-        <Header />
+        <Header rankingsData={this.state.rows} />
         <h1>Lincoln-Douglas Debate Rankings</h1>
-        <div style={{ height: "78vh", width: "70%", margin: "auto" }}>
+        <div style={{ height: '78vh', width: '70%', margin: 'auto' }}>
           {!this.state.isLoading && (
-            <DataGrid
-              rows={this.state.rows}
-              columns={this.columns}
-              rowsPerPageOptions={[]}
-            />
+            <DataGrid rows={this.state.rows} columns={this.columns} rowsPerPageOptions={[]} />
           )}
         </div>
       </div>

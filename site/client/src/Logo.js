@@ -1,10 +1,4 @@
-import React from "react";
-
-// TODO:
-// just collect more data for 2019-2020 or maybe some 2020-2021,
-// and then set up an automated process for data collection
-// (dont necessarily have to use the new data)
-// TODO:
+import React from 'react';
 
 class Logo extends React.Component {
   render() {
@@ -12,7 +6,7 @@ class Logo extends React.Component {
       <a href="/">
         <img
           src="logo_wide_white_text.png"
-          style={{ width: "250px", position: "absolute", left: 12, top: 17 }}
+          style={{ width: '250px', position: 'absolute', left: 12, top: 17 }}
         />
       </a>
     );

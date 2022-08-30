@@ -3,7 +3,7 @@ import json
 import sys
 import copy
 import sqlite3
-from lxml import html, etree
+from lxml import html
 from elo import EloSystem
 
 start = '2020-08-01'
