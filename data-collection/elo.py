@@ -155,8 +155,6 @@ class EloSystem:
     self.rounds = rounds
   
   def run_round(self, debater_a, debater_b, round_data):
-    # debater_a_K = max(lerp(debater_a.rounds, 0, 6, 70, 20), 20)
-    # debater_b_K = max(lerp(debater_b.rounds, 0, 6, 70, 20), 20)
     debater_a_K = 20
     debater_b_K = 20
 
