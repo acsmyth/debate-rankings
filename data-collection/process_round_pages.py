@@ -30,8 +30,9 @@ results_data = []
 
 entries_data = json.loads(entries_str)
 for tournament_id in entries_data:
-  if tournament_id == '16799':
+  if tournament_id == '20873':
     continue
+
   date = next(e['date'] for e in tournament_data if e['id'] == int(tournament_id))
   name = next(e['name'] for e in tournament_data if e['id'] == int(tournament_id))
   for entry_id in entries_data[tournament_id]:
@@ -41,9 +42,15 @@ for tournament_id in entries_data:
       page_str = file.read().decode('utf-8')
     tree = html.fromstring(page_str)
     
-    debater_code = tree.xpath('//div[@class="main"]/h2/text()')[0].strip()
+    debater_code = tree.xpath('//div[@class="main"]/div/span/h6/text()')[0].strip()
+    debater_code = debater_code.replace('\n', '').replace('\t', '').replace('  ', ' ')
+    debater_code = debater_code.split(':')[-1]
+    letter_code = debater_code.split(' ')[-1]
+    if len(letter_code) == 3 and letter_code[2].islower():
+      debater_code = debater_code[ : debater_code.rindex(' ')] + ' ' + letter_code[ : 2]
+
     debater_name = tree.xpath('//div[@class="main"]/div/span/h4/text()')[0].strip()
-    debater_school = tree.xpath('//div[@class="main"]/div/span/h6/text()')[0].strip()
+    debater_school = debater_code[ : debater_code.rindex(' ')]
 
     round_rows = tree.xpath('//div[@class="main"]/div[contains(@class, "row")]')
     rounds = []
