@@ -2,6 +2,9 @@ import re
 from datetime import datetime
 import copy
 
+def lerp(x, a, b, c, d):
+  return ((d - c) / (b - a)) * (x - a) + c
+
 def time_of_round(r1):
   date_obj = datetime.strptime(r1['date'], '%Y-%m-%d')
   round_order = [
@@ -67,7 +70,7 @@ def time_of_round(r1):
   return date_obj.timestamp() + round_order.index(r1['round'])
 
 class Debater:
-  def __init__(self, code, name='', school='', rating=1500):
+  def __init__(self, code, name='', school='', rating=2500):
     self.code = code
     self.name = name
     self.school = school
@@ -124,7 +127,9 @@ class EloSystem:
           'result': rnd['result'],
           'tournament_id': round_data['tournament_id'],
           'tournament_name': round_data['tournament_name'],
-          'date': round_data['date']
+          'date': round_data['date'],
+          'debater_a_elo_change': 0.0,
+          'debater_b_elo_change': 0.0,
         }
         rounds.append(round_info)
         rounds_added.add(rnd['round'] + ' | ' + round_data['debater_code'] + ' | ' + rnd['opponent_code'] + ' | ' + round_data['tournament_id'])
@@ -150,7 +155,11 @@ class EloSystem:
     self.rounds = rounds
   
   def run_round(self, debater_a, debater_b, round_data):
-    K = 20
+    # debater_a_K = max(lerp(debater_a.rounds, 0, 6, 70, 20), 20)
+    # debater_b_K = max(lerp(debater_b.rounds, 0, 6, 70, 20), 20)
+    debater_a_K = 20
+    debater_b_K = 20
+
     r_a = debater_a.rating
     r_b = debater_b.rating
     expected_a = 1 / (1 + 10**((r_b - r_a) / 400))
@@ -158,19 +167,25 @@ class EloSystem:
     if isinstance(round_data['result'], list):
       actual_a = sum(1 if ballot == 'W' else 0 for ballot in round_data['result']) / len(round_data['result'])
       actual_b = sum(0 if ballot == 'W' else 1 for ballot in round_data['result']) / len(round_data['result'])
-      K = 30
+      # Increase K for elim rounds with more judges
+      debater_a_K *= 1.5
+      debater_b_K *= 1.5
     else:
       actual_a = 1 if round_data['result'] == 'W' else 0
       actual_b = 0 if round_data['result'] == 'W' else 1
 
-    r_a_new = r_a + K*(actual_a - expected_a)
-    r_b_new = r_b + K*(actual_b - expected_b)
+    r_a_new = r_a + debater_a_K*(actual_a - expected_a)
+    r_b_new = r_b + debater_b_K*(actual_b - expected_b)
     debater_a.set_rating(r_a_new)
     debater_b.set_rating(r_b_new)
     round_data_with_elo_a = copy.copy(round_data)
     round_data_with_elo_b = copy.copy(round_data)
     round_data_with_elo_a['elo_change'] = r_a_new - r_a
     round_data_with_elo_b['elo_change'] = r_b_new - r_b
+    
+    round_data['debater_a_elo_change'] = r_a_new - r_a
+    round_data['debater_b_elo_change'] = r_b_new - r_b
+
     debater_a.add_round(round_data_with_elo_a)
     debater_b.add_round(round_data_with_elo_b)
   

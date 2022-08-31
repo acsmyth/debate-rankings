@@ -89,6 +89,20 @@ class RoundRow extends React.Component {
     }
   };
 
+  getEloChange = () => {
+    let change = this.isDebaterA()
+      ? this.props.round.debater_a_elo_change
+      : this.props.round.debater_b_elo_change;
+    change = Math.round(change);
+    if (change > 0) {
+      return <span style={{ color: "darkgreen" }}>{`+${change}`}</span>;
+    } else if (change < 0) {
+      return <span style={{ color: "crimson" }}>{change}</span>;
+    } else {
+      return null;
+    }
+  };
+
   getDate = () => {
     const d = this.props.round.date.split("-");
     return `${d[1]}/${d[2]}/${d[0]}`;
@@ -109,6 +123,7 @@ class RoundRow extends React.Component {
         <span className="tournament_name">
           {this.props.round.tournament_name}
         </span>
+        <span className="elo_change">{this.getEloChange()}</span>
         <span className="date">{this.getDate()}</span>
       </div>
     );

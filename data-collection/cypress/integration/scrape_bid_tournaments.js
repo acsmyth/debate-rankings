@@ -14,6 +14,7 @@ const varsityLdNames = [
   "OLD",
   "TOC LD",
   "Lincoln Douglas - TOC",
+  "Varsity LD - Online",
 ];
 
 let entryUrls = {};

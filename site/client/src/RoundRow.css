@@ -16,6 +16,16 @@
   overflow: hidden;
 }
 
+.elo_change {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 5px;
+  margin-right: 20px;
+  width: 70px;
+  display: flex;
+  overflow: hidden;
+}
+
 .result {
   width: 160px;
 }

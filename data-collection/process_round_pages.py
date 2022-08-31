@@ -171,13 +171,13 @@ if table_exists('rounds', cur):
     cur.execute('DELETE FROM rounds_backup')
   else:
     cur.execute('''CREATE TABLE rounds_backup
-                   (round, debater_a_code, debater_a_name, debater_a_school, debater_b_code, result, tournament_id, tournament_name, date)''')
+                   (round, debater_a_code, debater_a_name, debater_a_school, debater_b_code, result, tournament_id, tournament_name, date, debater_a_elo_change, debater_b_elo_change)''')
   cur.execute('INSERT INTO rounds_backup SELECT * FROM rounds')
   cur.execute('DELETE FROM rounds')
 else:
   # print('got here 2')
   cur.execute('''CREATE TABLE rounds
-                 (round, debater_a_code, debater_a_name, debater_a_school, debater_b_code, result, tournament_id, tournament_name, date)''')
+                 (round, debater_a_code, debater_a_name, debater_a_school, debater_b_code, result, tournament_id, tournament_name, date, debater_a_elo_change, debater_b_elo_change)''')
 cur.execute(f'INSERT INTO rounds VALUES {rounds_str}')
 
 con.commit()
