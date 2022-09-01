@@ -6,8 +6,8 @@ import sqlite3
 from lxml import html
 from elo import EloSystem
 
-start = '2020-08-01'
-end = '2021-08-01'
+start = '2021-08-01'
+end = '2022-08-01'
 
 args = copy.deepcopy(sys.argv[1:])
 for arg in args:
@@ -51,6 +51,11 @@ for tournament_id in entries_data:
 
     debater_name = tree.xpath('//div[@class="main"]/div/span/h4/text()')[0].strip()
     debater_school = debater_code[ : debater_code.rindex(' ')]
+
+    # 2018-2019 format
+    # debater_school = tree.xpath('//div[@class="main"]/div/span/h6/text()')[0].strip()
+    # debater_name = tree.xpath('//div[@class="main"]/div/span/h4/text()')[0].strip()
+    # debater_code = tree.xpath('//div[@class="main"]/h2/text()')[0].strip()
 
     round_rows = tree.xpath('//div[@class="main"]/div[contains(@class, "row")]')
     rounds = []
