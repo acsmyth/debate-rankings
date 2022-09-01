@@ -13,7 +13,7 @@ router.get("/rankings", (req, res) => {
       throw err;
     }
     rows.forEach((row, index) => (row.id = index + 1));
-    res.json(rows.slice(0, 500));
+    res.json(rows);
   });
   db.close();
 });

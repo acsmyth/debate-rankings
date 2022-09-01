@@ -1,8 +1,8 @@
-import React from 'react';
-import RoundRow from './RoundRow';
-import Header from './Header';
-import './DebaterPage.css';
-import { API_BASE_URL } from './utils';
+import React from "react";
+import RoundRow from "./RoundRow";
+import Header from "./Header";
+import "./DebaterPage.css";
+import { API_BASE_URL } from "./utils";
 
 class DebaterPage extends React.Component {
   state = {
@@ -17,9 +17,11 @@ class DebaterPage extends React.Component {
   };
 
   getRank = () => {
-    const idx = this.state.rankings.findIndex((debater) => debater.code == this.state.debater.code);
+    const idx = this.state.rankings.findIndex(
+      (debater) => debater.code == this.state.debater.code
+    );
     if (idx === -1) {
-      return 'N/A';
+      return "N/A";
     }
     return idx + 1;
   };
@@ -31,11 +33,11 @@ class DebaterPage extends React.Component {
   };
 
   hasAllInfo = () => {
-    return this.state.debater.name !== '' && this.state.debater.school !== '';
+    return this.state.debater.name !== "" && this.state.debater.school !== "";
   };
 
   componentDidMount() {
-    const codeParam = new URLSearchParams(window.location.search).get('code');
+    const codeParam = new URLSearchParams(window.location.search).get("code");
     fetch(`${API_BASE_URL}/users/get_rounds?code=${codeParam}`)
       .then((res) => res.json())
       .then((rounds) => {
@@ -63,11 +65,7 @@ class DebaterPage extends React.Component {
       <div className="DebaterPage">
         <Header rankingsData={this.state.rankings} />
         <h1>{this.state.debater.name}</h1>
-        <h3>
-          {this.hasAllInfo()
-            ? this.state.debater.code + ', ' + this.state.debater.school
-            : this.state.debater.code}
-        </h3>
+        <h3>{this.state.debater.code}</h3>
         <br />
         <div className="debater_info">
           {this.hasAllInfo() && <h4>{`Rank ${this.getRank()}`}</h4>}
@@ -78,7 +76,12 @@ class DebaterPage extends React.Component {
         <br />
         <div className="rounds">
           {this.state.rounds.map((round, index) => (
-            <RoundRow round={round} debater={this.state.debater} key={index} rowIndex={index} />
+            <RoundRow
+              round={round}
+              debater={this.state.debater}
+              key={index}
+              rowIndex={index}
+            />
           ))}
         </div>
       </div>
