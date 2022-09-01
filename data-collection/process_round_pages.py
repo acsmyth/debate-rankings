@@ -67,10 +67,7 @@ for tournament_id in entries_data:
           'speaker_points': -1
         })
         continue
-      # print(etree.tostring(row[2][0]))
-      # print(len(row[3]))
-      # print(tournament_id)
-      # print(entry_id)
+
       if len(row[3]) == 0:
         continue
       elif len(row[3]) == 1:
@@ -93,8 +90,7 @@ for tournament_id in entries_data:
           'result': [row[3][i][1].text.strip() for i in range(len(row[3]))],
           'speaker_points': float(row[3][0][2][0][0].text.strip()) if len(row[3][0]) > 2 and len(row[3][0][2]) > 0 else -1
         })
-      # if rounds[len(rounds)-1]['round'] == 'Sextodecimals':
-      #   print(rounds[len(rounds)-1])
+
     debater_tournament_results = {
       'debater_code': debater_code,
       'debater_name': debater_name,
@@ -132,15 +128,6 @@ rounds_str = str([tuple(r.values()) for r in rounds])
 rounds_str = rounds_str[1:-1]
 
 
-# for rnd in rounds_str.split(' '):
-#   print(rnd, end=' ')
-
-# rounds_str = rounds_str.replace("'W'", '"W"').replace("'L'", '"L"')
-# rounds_str = rounds_str.replace('[', '\'[').replace(']', ']\'')
-# print(rounds_str[63120-300:63120+300])
-# print(rounds_str[:112])
-
-
 def table_exists(table, cur):
   return [e for e in cur.execute(f'''SELECT count(*) FROM sqlite_master
                                     WHERE type='table'
@@ -166,7 +153,6 @@ con.commit()
 
 # store round info
 if table_exists('rounds', cur):
-  # print('got here 1')
   if table_exists('rounds_backup', cur):
     cur.execute('DELETE FROM rounds_backup')
   else:
@@ -175,7 +161,6 @@ if table_exists('rounds', cur):
   cur.execute('INSERT INTO rounds_backup SELECT * FROM rounds')
   cur.execute('DELETE FROM rounds')
 else:
-  # print('got here 2')
   cur.execute('''CREATE TABLE rounds
                  (round, debater_a_code, debater_a_name, debater_a_school, debater_b_code, result, tournament_id, tournament_name, date, debater_a_elo_change, debater_b_elo_change)''')
 cur.execute(f'INSERT INTO rounds VALUES {rounds_str}')
