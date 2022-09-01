@@ -122,14 +122,14 @@ tierlist = elo_system.get_ratings()
 
 tierlist = sorted([(e, tierlist[e].name, tierlist[e].school, round(tierlist[e].rating), tierlist[e].rounds, confidence(tierlist[e].rounds), tierlist[e].get_winrate()) for e in tierlist], key=lambda tup: tup[3], reverse=True)
 tierlist_str = str(tierlist)
-tierlist_str = tierlist_str[1:len(tierlist_str)-1]
+tierlist_str = tierlist_str[1:-1]
 
 rounds = elo_system.get_rounds()
 for r in rounds:
   if isinstance(r['result'], list):
     r['result'] = str(r['result']).replace('\'', '"')
 rounds_str = str([tuple(r.values()) for r in rounds])
-rounds_str = rounds_str[1:len(rounds_str)-1]
+rounds_str = rounds_str[1:-1]
 
 
 # for rnd in rounds_str.split(' '):
