@@ -12,6 +12,24 @@ router.get("/rankings", (req, res) => {
       console.log(err.stack);
       throw err;
     }
+    // Only ranked if at least 10 rounds
+    rows = rows.filter((row) => row.num_rounds >= 10);
+
+    rows.forEach((row, index) => (row.id = index + 1));
+    res.json(rows);
+  });
+  db.close();
+});
+
+router.get("/all_debaters", (req, res) => {
+  let db = new sqlite3.Database("../../data-collection/debate.db");
+  const sql = `SELECT * FROM rankings WHERE name != '' AND school != ''`;
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      console.log(err.message);
+      console.log(err.stack);
+      throw err;
+    }
     rows.forEach((row, index) => (row.id = index + 1));
     res.json(rows);
   });

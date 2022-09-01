@@ -7,8 +7,9 @@ import { API_BASE_URL } from "./utils";
 
 class RankingsPage extends React.Component {
   state = {
-    rows: [],
-    isLoading: true,
+    rankings: [],
+    allDebaters: [],
+    loading: 0,
   };
 
   renderBold = (params) => <b>{params.colDef.headerName}</b>;
@@ -70,20 +71,25 @@ class RankingsPage extends React.Component {
   componentDidMount() {
     fetch(`${API_BASE_URL}/users/rankings`)
       .then((res) => res.json())
-      .then((rows) => {
-        this.setState({ rows, isLoading: false });
+      .then((rankings) => {
+        this.setState({ rankings, loading: this.state.loading + 1 });
+      });
+    fetch(`${API_BASE_URL}/users/all_debaters`)
+      .then((res) => res.json())
+      .then((allDebaters) => {
+        this.setState({ allDebaters, loading: this.state.loading + 1 });
       });
   }
 
   render() {
     return (
       <div className="RankingsPage">
-        <Header rankingsData={this.state.rows} />
+        <Header debaterData={this.state.allDebaters} />
         <h1>2021-2022 Lincoln-Douglas Debate Rankings</h1>
         <div style={{ height: "78vh", width: "70%", margin: "auto" }}>
-          {!this.state.isLoading && (
+          {this.state.loading === 2 && (
             <DataGrid
-              rows={this.state.rows}
+              rows={this.state.rankings}
               columns={this.columns}
               rowsPerPageOptions={[]}
             />

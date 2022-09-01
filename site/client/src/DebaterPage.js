@@ -10,6 +10,7 @@ class DebaterPage extends React.Component {
     debater: {},
     loading: 0,
     rankings: [],
+    allDebaters: [],
   };
 
   getWinrate = () => {
@@ -51,6 +52,12 @@ class DebaterPage extends React.Component {
         this.setState({ rankings });
         this.loaded();
       });
+    fetch(`${API_BASE_URL}/users/all_debaters`)
+      .then((res) => res.json())
+      .then((allDebaters) => {
+        this.setState({ allDebaters });
+        this.loaded();
+      });
     fetch(`${API_BASE_URL}/users/get_debater?code=${codeParam}`)
       .then((res) => res.json())
       .then((debater) => {
@@ -60,10 +67,10 @@ class DebaterPage extends React.Component {
   }
 
   render() {
-    if (this.state.loading < 3) return <div className="DebaterPage"></div>;
+    if (this.state.loading < 4) return <div className="DebaterPage"></div>;
     return (
       <div className="DebaterPage">
-        <Header rankingsData={this.state.rankings} />
+        <Header debaterData={this.state.allDebaters} />
         <h1>{this.state.debater.name}</h1>
         <h3>{this.state.debater.code}</h3>
         <br />
@@ -71,6 +78,7 @@ class DebaterPage extends React.Component {
           {this.hasAllInfo() && <h4>{`Rank ${this.getRank()}`}</h4>}
           <h4>{`Elo: ${this.state.debater.elo}`}</h4>
           <h4>{`Winrate: ${this.getWinrate()}`}</h4>
+          <h4>{`Rounds: ${this.state.debater.num_rounds}`}</h4>
         </div>
         <br />
         <br />

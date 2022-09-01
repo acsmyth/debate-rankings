@@ -1,14 +1,14 @@
-import React from 'react';
-import Logo from './Logo';
-import SearchBar from './SearchBar';
-import './Header.css';
+import React from "react";
+import Logo from "./Logo";
+import SearchBar from "./SearchBar";
+import "./Header.css";
 
 class Header extends React.Component {
   buildOptions = () => {
-    return this.props.rankingsData
-      .map((ranking) => ({
-        label: `${ranking.code} (${ranking.name})`,
-        id: ranking.code,
+    return this.props.debaterData
+      .map((debater) => ({
+        label: `${debater.code} (${debater.name})`,
+        id: debater.code,
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
   };
