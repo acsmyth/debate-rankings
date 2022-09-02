@@ -13,7 +13,7 @@ class RoundRow extends React.Component {
     if (opponent === "NONE") {
       return <a />;
     }
-    opponent = opponent.replaceAll(" ", "_");
+    opponent = opponent.replaceAll("_", " ");
     return <Link to={`/debater?code=${opponent}`}>{"vs " + opponent}</Link>;
   };
 
