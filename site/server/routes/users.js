@@ -12,8 +12,8 @@ router.get("/rankings", (req, res) => {
       console.log(err.stack);
       throw err;
     }
-    // Only ranked if at least 10 rounds
-    rows = rows.filter((row) => row.num_rounds >= 10);
+    // Only ranked if participated in at least 2 tournaments
+    // TODO:
 
     rows.forEach((row, index) => (row.id = index + 1));
     res.json(rows);

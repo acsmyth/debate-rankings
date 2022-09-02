@@ -3,6 +3,8 @@ import RoundRow from "./RoundRow";
 import Header from "./Header";
 import "./DebaterPage.css";
 import { API_BASE_URL } from "./utils";
+import { IconButton, Tooltip } from "@mui/material";
+import InfoIcon from "@mui/icons-material/Info";
 
 class DebaterPage extends React.Component {
   state = {
@@ -22,9 +24,21 @@ class DebaterPage extends React.Component {
       (debater) => debater.code == this.state.debater.code
     );
     if (idx === -1) {
-      return "N/A";
+      return (
+        <>
+          <span>Rank: N/A</span>
+          <Tooltip
+            title="Debaters are only ranked after participating in at least 10 rounds"
+            style={{ marginBottom: "4px" }}
+          >
+            <IconButton>
+              <InfoIcon />
+            </IconButton>
+          </Tooltip>
+        </>
+      );
     }
-    return idx + 1;
+    return `Rank: ${idx + 1}`;
   };
 
   loaded = () => {
@@ -75,7 +89,7 @@ class DebaterPage extends React.Component {
         <h3>{this.state.debater.code}</h3>
         <br />
         <div className="debater_info">
-          {this.hasAllInfo() && <h4>{`Rank ${this.getRank()}`}</h4>}
+          {this.hasAllInfo() && <h4>{this.getRank()}</h4>}
           <h4>{`Elo: ${this.state.debater.elo}`}</h4>
           <h4>{`Winrate: ${this.getWinrate()}`}</h4>
           <h4>{`Rounds: ${this.state.debater.num_rounds}`}</h4>

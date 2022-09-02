@@ -1,5 +1,7 @@
+from collections import defaultdict
 import os
 import json
+import re
 import sys
 import copy
 import sqlite3
@@ -26,13 +28,35 @@ with open(f'tabroom/bid_tournament_ids_{start}___{end}.json', 'r', encoding='utf
   tournament_data_str = file.read()
 tournament_data = json.loads(tournament_data_str)
 
+
+def convert_code_for_20873(code):
+  name_parts = code.split(' ')[-2 :]
+  letter_code = ''.join(w[0] for w in name_parts)
+
+  name = ' '.join(name_parts)
+  school = code[ : code.index(name)].strip()
+
+  return school + ' ' + letter_code
+
 results_data = []
+debater_info_by_name = defaultdict(set)
 
 entries_data = json.loads(entries_str)
-for tournament_id in entries_data:
-  if tournament_id == '20873':
-    continue
 
+tournament_ids_ordered = list(entries_data.keys())
+
+# Put last because of weird debater code formats
+tournament_ids_ordered.remove('20873')
+tournament_ids_ordered.append('20873')
+
+tournament_ids_ordered.remove('20714')
+tournament_ids_ordered.append('20714')
+
+tournament_ids_ordered.remove('20436')
+tournament_ids_ordered.append('20436')
+
+
+for tournament_id in tournament_ids_ordered:
   date = next(e['date'] for e in tournament_data if e['id'] == int(tournament_id))
   name = next(e['name'] for e in tournament_data if e['id'] == int(tournament_id))
   for entry_id in entries_data[tournament_id]:
@@ -44,18 +68,43 @@ for tournament_id in entries_data:
     
     debater_code = tree.xpath('//div[@class="main"]/div/span/h6/text()')[0].strip()
     debater_code = debater_code.replace('\n', '').replace('\t', '').replace('  ', ' ')
-    debater_code = debater_code.split(':')[-1]
-    letter_code = debater_code.split(' ')[-1]
-    if len(letter_code) == 3 and letter_code[2].islower():
-      debater_code = debater_code[ : debater_code.rindex(' ')] + ' ' + letter_code[ : 2]
+    if ':' in debater_code:
+      debater_code = debater_code.split(':')[-1]
+      letter_code = debater_code.split(' ')[-1]
+      if len(letter_code) == 3 and (letter_code[0] + letter_code[1]).isupper() and letter_code[2].islower():
+        debater_code = debater_code[ : debater_code.rindex(' ')] + ' ' + letter_code[ : 2]
 
     debater_name = tree.xpath('//div[@class="main"]/div/span/h4/text()')[0].strip()
+    debater_name = re.sub('\s+', ' ', debater_name)
+
     debater_school = debater_code[ : debater_code.rindex(' ')]
+    if tournament_id == '20873':
+      debater_initials = ''.join(w[0] for w in debater_name.split(' '))
+      debater_school = debater_code[ : debater_code.index(debater_name)].strip()
+      debater_code = debater_school + ' ' + debater_initials
+    elif tournament_id == '20436':
+      if debater_name in debater_info_by_name and len(debater_info_by_name[debater_name]) == 1:
+        debater_code, debater_school = next(iter(debater_info_by_name[debater_name]))
+      elif debater_name in debater_info_by_name:
+        manual_translations = {
+          'Ansh Sheth': ('Harker AS', 'Harker'),
+          'Max Perin': ('Sage MP', 'Sage'),
+          'Muzzi Khan': ('Muzzi Khan', 'Harker'),
+          'Sofia Shah': ('Harker SS', 'Harker'),
+          'Rahul Mulpuri': ('Harker RM', 'Harker'),
+        }
+        debater_code, debater_school = manual_translations[debater_name]
+      else:
+        # Do nothing, since this is their first tournament so the code will be whatever it is
+        pass
 
     # 2018-2019 format
     # debater_school = tree.xpath('//div[@class="main"]/div/span/h6/text()')[0].strip()
     # debater_name = tree.xpath('//div[@class="main"]/div/span/h4/text()')[0].strip()
     # debater_code = tree.xpath('//div[@class="main"]/h2/text()')[0].strip()
+
+    debater_info_by_name[debater_name].add((debater_code, debater_school))
+
 
     round_rows = tree.xpath('//div[@class="main"]/div[contains(@class, "row")]')
     rounds = []
@@ -76,20 +125,28 @@ for tournament_id in entries_data:
       if len(row[3]) == 0:
         continue
       elif len(row[3]) == 1:
+        opponent_code = row[2][0].text.strip()[3:]
+        if tournament_id == '20873':
+          opponent_code = convert_code_for_20873(opponent_code)
+
         rounds.append({
           'round': row[0].text.strip(),
           'side': row[1].text.strip(),
-          'opponent_code': row[2][0].text.strip()[3:],
+          'opponent_code': opponent_code,
           'opponent_id': int(row[2][0].get('href')[row[2][0].get('href').index('&entry_id=')+10:]),
           'judge': row[3][0][0][0].text.strip(),
           'result': row[3][0][1].text.strip(),
           'speaker_points': float(row[3][0][2][0][0].text.strip()) if len(row[3][0]) > 2 and len(row[3][0][2]) > 0 else -1
         })
       else:
+        opponent_code = row[2][0].text.strip()[3:]
+        if tournament_id == '20873':
+          opponent_code = convert_code_for_20873(opponent_code)
+
         rounds.append({
           'round': row[0].text.strip(),
           'side': row[1].text.strip(),
-          'opponent_code': row[2][0].text.strip()[3:],
+          'opponent_code': opponent_code,
           'opponent_id': int(row[2][0].get('href')[row[2][0].get('href').index('&entry_id=')+10:]),
           'judge': [row[3][i][0][0].text.strip() for i in range(len(row[3]))],
           'result': [row[3][i][1].text.strip() for i in range(len(row[3]))],
