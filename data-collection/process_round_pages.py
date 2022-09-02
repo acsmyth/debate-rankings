@@ -97,6 +97,12 @@ for tournament_id in tournament_ids_ordered:
       else:
         # Do nothing, since this is their first tournament so the code will be whatever it is
         pass
+    
+    # Make sure no excess spaces anywhere
+    debater_code = re.sub('\s+', ' ', debater_code)
+    debater_name = re.sub('\s+', ' ', debater_name)
+    debater_school = re.sub('\s+', ' ', debater_school)
+
 
     # 2018-2019 format
     # debater_school = tree.xpath('//div[@class="main"]/div/span/h6/text()')[0].strip()
@@ -114,6 +120,7 @@ for tournament_id in tournament_ids_ordered:
         continue
       elif len(row[3]) == 1:
         opponent_code = row[2][0].text.strip()[3:]
+        opponent_code = re.sub('\s+', ' ', opponent_code)
         if tournament_id == '20873':
           opponent_code = convert_code_for_20873(opponent_code)
 
@@ -128,6 +135,7 @@ for tournament_id in tournament_ids_ordered:
         })
       else:
         opponent_code = row[2][0].text.strip()[3:]
+        opponent_code = re.sub('\s+', ' ', opponent_code)
         if tournament_id == '20873':
           opponent_code = convert_code_for_20873(opponent_code)
 
