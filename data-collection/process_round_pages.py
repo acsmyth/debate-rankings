@@ -38,6 +38,38 @@ def convert_code_for_20873(code):
 
   return school + ' ' + letter_code
 
+def manual_code_translation(debater_code):
+  manual_translations = {
+    'Lexington AMa': 'Lexington AM',
+    'Acton-Boxborough ALi': 'Acton-Boxborough AL',
+    'BASIS Independent Silicon Valley SK': 'BASIS Independent Silicon Valley Independent SK',
+    'Lake Highland Prep ArVe': 'Lake Highland Prep AV',
+    'Lake Highland Prep AVe': 'Lake Highland Prep AV',
+    'Southlake Carroll EP': 'Southlake Carroll EP',
+    'Harker RMu': 'Harker RM',
+    'Westwood VLo': 'Westwood VL',
+    'Princeton Independent VC': 'Princeton VC',
+    'Evergreen Valley Independent SS': 'Evergreen Valley SS',
+    'Princeton Independent JG': 'Princeton JG',
+    'OA Independent VD': 'Oxford VD',
+    'OA Independent VD': 'Oxford VM',
+    'Harker ASh': 'Harker AS',
+    'Harker SSh': 'Harker SS',
+    'Sage Hill MP': 'Sage MP',
+    'Plano Independent NG': 'Plano East NG',
+    'Sidwell Independent SW': 'Sidewell SW',
+    'Millard North Independents NL': 'Millard North NL',
+    'Sammamish Independent LW': 'Sammamish LW',
+    'Samammish LW': 'Sammamish LW',
+    'St Croix Prep ADe': 'St Croix Prep AD',
+    'William P. Clements Independent MM': 'William P. Clements MM',
+    'Westwood DLi': 'Westwood DL',
+  }
+  if debater_code in manual_translations:
+    return manual_translations[debater_code]
+  return debater_code
+
+
 results_data = []
 debater_info_by_name = defaultdict(set)
 
@@ -103,6 +135,8 @@ for tournament_id in tournament_ids_ordered:
     debater_name = re.sub('\s+', ' ', debater_name)
     debater_school = re.sub('\s+', ' ', debater_school)
 
+    debater_code = manual_code_translation(debater_code)
+
 
     # 2018-2019 format
     # debater_school = tree.xpath('//div[@class="main"]/div/span/h6/text()')[0].strip()
@@ -123,6 +157,7 @@ for tournament_id in tournament_ids_ordered:
         opponent_code = re.sub('\s+', ' ', opponent_code)
         if tournament_id == '20873':
           opponent_code = convert_code_for_20873(opponent_code)
+        opponent_code = manual_code_translation(opponent_code)
 
         rounds.append({
           'round': row[0].text.strip(),
@@ -138,6 +173,7 @@ for tournament_id in tournament_ids_ordered:
         opponent_code = re.sub('\s+', ' ', opponent_code)
         if tournament_id == '20873':
           opponent_code = convert_code_for_20873(opponent_code)
+        opponent_code = manual_code_translation(opponent_code)
 
         result = [row[3][i][1].text.strip() for i in range(len(row[3]))]
         speaker_points = float(row[3][0][2][0][0].text.strip()) if len(row[3][0]) > 2 and len(row[3][0][2]) > 0 else -1
