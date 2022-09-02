@@ -13,8 +13,9 @@ class RoundRow extends React.Component {
     if (opponent === "NONE") {
       return <a />;
     }
-    opponent = opponent.replaceAll("_", " ");
-    return <Link to={`/debater?code=${opponent}`}>{"vs " + opponent}</Link>;
+    const opponentForUrl = opponent.replaceAll(" ", "_");
+    const opponentForDisplay = opponent.replaceAll("_", " ");
+    return <Link to={`/debater?code=${opponentForUrl}`}>{"vs " + opponentForDisplay}</Link>;
   };
 
   getResult = () => {
