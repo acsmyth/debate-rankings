@@ -110,18 +110,6 @@ for tournament_id in tournament_ids_ordered:
     rounds = []
     for row in reversed(round_rows):
       # chronological order
-      if row[1].text.strip() == 'Bye':
-        rounds.append({
-          'round': row[0].text.strip(),
-          'side': row[1].text.strip(),
-          'opponent_code': 'NONE',
-          'opponent_id': -1,
-          'judge': 'NONE',
-          'result': 'Bye',
-          'speaker_points': -1
-        })
-        continue
-
       if len(row[3]) == 0:
         continue
       elif len(row[3]) == 1:
@@ -143,14 +131,23 @@ for tournament_id in tournament_ids_ordered:
         if tournament_id == '20873':
           opponent_code = convert_code_for_20873(opponent_code)
 
+        result = [row[3][i][1].text.strip() for i in range(len(row[3]))]
+        speaker_points  =float(row[3][0][2][0][0].text.strip()) if len(row[3][0]) > 2 and len(row[3][0][2]) > 0 else -1
+
+        if 'W' not in result and 'L' not in result:
+          if row[1].text.strip() == 'Bye':
+            result = 'Bye'
+          else:
+            result = 'Bye (Loss)'
+
         rounds.append({
           'round': row[0].text.strip(),
           'side': row[1].text.strip(),
           'opponent_code': opponent_code,
           'opponent_id': int(row[2][0].get('href')[row[2][0].get('href').index('&entry_id=')+10:]),
           'judge': [row[3][i][0][0].text.strip() for i in range(len(row[3]))],
-          'result': [row[3][i][1].text.strip() for i in range(len(row[3]))],
-          'speaker_points': float(row[3][0][2][0][0].text.strip()) if len(row[3][0]) > 2 and len(row[3][0][2]) > 0 else -1
+          'result': result,
+          'speaker_points': speaker_points,
         })
 
     debater_tournament_results = {
