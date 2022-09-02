@@ -18,7 +18,7 @@ scp('../data-collection/debate.db', '/home/bitnami/debate-rankings/data-collecti
 # Build and deploy client
 os.system('cd ../site/client/ && npm install')
 os.system(f'npm run build --prefix ../site/client/')
-scp('../site/client/build/', '/home/bitnami/debate-rankings/site/client/', recurse=True)
+scp('../site/client/build/', '/home/bitnami/debate-rankings/site/client/', recursive=True)
 run_commands_over_ssh('sudo systemctl restart nginx')
 
 # Build and deploy server
