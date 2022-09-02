@@ -6,26 +6,15 @@ class RoundRow extends React.Component {
   isDebaterA = () =>
     this.props.debater.code === this.props.round.debater_a_code;
 
-  isBye = () => this.props.round.result === "Bye";
-
   getOpponent = () => {
-    if (this.isBye()) return <a />;
-    const maybeVs = this.isBye() ? "" : "vs ";
-    if (this.isDebaterA()) {
-      const code = this.props.round.debater_b_code.replaceAll(" ", "_");
-      return (
-        <Link to={`/debater?code=${code}`}>
-          {maybeVs + this.props.round.debater_b_code}
-        </Link>
-      );
-    } else {
-      const code = this.props.round.debater_a_code.replaceAll(" ", "_");
-      return (
-        <Link to={`/debater?code=${code}`}>
-          {maybeVs + this.props.round.debater_a_code}
-        </Link>
-      );
+    let opponent = this.isDebaterA()
+      ? this.props.round.debater_b_code
+      : this.props.round.debater_a_code;
+    if (opponent === "NONE") {
+      return <a />;
     }
+    opponent = opponent.replaceAll(" ", "_");
+    return <Link to={`/debater?code=${opponent}`}>{"vs " + opponent}</Link>;
   };
 
   getResult = () => {
@@ -40,6 +29,9 @@ class RoundRow extends React.Component {
     const result = this.getResult();
     if (result === "Bye") {
       return <span style={{ color: "darkgreen" }}>Bye</span>;
+    }
+    if (result === "Bye (Loss)") {
+      return <span style={{ color: "crimson" }}>Bye (Loss)</span>;
     }
     const withoutCommas = result
       .replaceAll(" ", "")
@@ -84,6 +76,10 @@ class RoundRow extends React.Component {
         .split(", ")
         .map((res) => (res === "W" ? "L" : "W"))
         .join(", ");
+    } else if (result === "Bye") {
+      return "Bye (Loss)";
+    } else if (result === "Bye (Loss)") {
+      return "Bye";
     } else {
       return result === "W" ? "L" : "W";
     }
