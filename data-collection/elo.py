@@ -137,7 +137,7 @@ class EloSystem:
     rounds = sorted(rounds, key=time_of_round)
     debaters = {} # debater code : elo
     for round_data in rounds:
-      if round_data['result'] == 'Bye':
+      if round_data['result'] in ('Bye', 'Bye (Loss)'):
         continue
       # round_data: has result: 'W' or result: 'L'
       code_a = round_data['debater_a_code']
