@@ -132,7 +132,7 @@ for tournament_id in tournament_ids_ordered:
           opponent_code = convert_code_for_20873(opponent_code)
 
         result = [row[3][i][1].text.strip() for i in range(len(row[3]))]
-        speaker_points  =float(row[3][0][2][0][0].text.strip()) if len(row[3][0]) > 2 and len(row[3][0][2]) > 0 else -1
+        speaker_points = float(row[3][0][2][0][0].text.strip()) if len(row[3][0]) > 2 and len(row[3][0][2]) > 0 else -1
 
         if 'W' not in result and 'L' not in result:
           if row[1].text.strip() == 'Bye':
