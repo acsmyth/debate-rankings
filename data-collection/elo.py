@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 import copy
 
+
 def lerp(x, a, b, c, d):
   return ((d - c) / (b - a)) * (x - a) + c
 
@@ -133,6 +134,7 @@ class EloSystem:
         }
         rounds.append(round_info)
         rounds_added.add(rnd['round'] + ' | ' + round_data['debater_code'] + ' | ' + rnd['opponent_code'] + ' | ' + round_data['tournament_id'])
+    
     # sort all round data in chronological order
     rounds = sorted(rounds, key=time_of_round)
     debaters = {} # debater code : elo
@@ -151,6 +153,7 @@ class EloSystem:
       debaters[code_a] = debater_a
       debaters[code_b] = debater_b
       self.run_round(debater_a, debater_b, round_data)
+
     self.debaters = debaters
     self.rounds = rounds
   
