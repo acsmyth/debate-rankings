@@ -92,13 +92,16 @@ tournament_ids_ordered.append('20436')
 for tournament_id in tournament_ids_ordered:
   date = next(e['date'] for e in tournament_data if e['id'] == int(tournament_id))
   name = next(e['name'] for e in tournament_data if e['id'] == int(tournament_id))
+
+  # First, get load all entry pages and get debater code / name / school
+  all_entry_data = []
   for entry_id in entries_data[tournament_id]:
     if not os.path.exists(f'round_data/{start}___{end}/tournament_{tournament_id}/entry_{entry_id}.html'):
       continue
     with open(f'round_data/{start}___{end}/tournament_{tournament_id}/entry_{entry_id}.html', 'rb') as file:
       page_str = file.read().decode('utf-8')
     tree = html.fromstring(page_str)
-    
+
     debater_code = tree.xpath('//div[@class="main"]/div/span/h6/text()')[0].strip()
     debater_code = debater_code.replace('\n', '').replace('\t', '').replace('  ', ' ')
     if ':' in debater_code:
@@ -147,6 +150,10 @@ for tournament_id in tournament_ids_ordered:
     debater_info_by_name[debater_name].add((debater_code, debater_school))
     debater_info_by_code[debater_code].add((debater_name, debater_school))
 
+    all_entry_data.append((entry_id, tree, debater_code, debater_name, debater_school))
+
+
+  for entry_id, tree, debater_code, debater_name, debater_school in all_entry_data:
     round_rows = tree.xpath('//div[@class="main"]/div[contains(@class, "row")]')
     rounds = []
     for row in reversed(round_rows):
