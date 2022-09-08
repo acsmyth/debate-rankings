@@ -125,6 +125,8 @@ class EloSystem:
           'debater_a_name': round_data['debater_name'],
           'debater_a_school': round_data['debater_school'],
           'debater_b_code': rnd['opponent_code'],
+          'debater_b_name': rnd['opponent_name'],
+          'debater_b_school': rnd['opponent_school'],
           'result': rnd['result'],
           'tournament_id': round_data['tournament_id'],
           'tournament_name': round_data['tournament_name'],
@@ -150,10 +152,17 @@ class EloSystem:
       if debater_a.name == '':
         debater_a.name = round_data['debater_a_name']
         debater_a.school = round_data['debater_a_school']
+      if debater_b.name == '':
+        debater_b.name = round_data['debater_b_name']
+        debater_b.school = round_data['debater_b_school']
       debaters[code_a] = debater_a
       debaters[code_b] = debater_b
       self.run_round(debater_a, debater_b, round_data)
 
+    # Remove columns that were only used above
+    for round_data in rounds:
+      del round_data['debater_b_name']
+      del round_data['debater_b_school']
     self.debaters = debaters
     self.rounds = rounds
   
