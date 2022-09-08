@@ -72,6 +72,7 @@ def manual_code_translation(debater_code):
 
 results_data = []
 debater_info_by_name = defaultdict(set)
+debater_info_by_code = defaultdict(set)
 
 entries_data = json.loads(entries_str)
 
@@ -144,7 +145,7 @@ for tournament_id in tournament_ids_ordered:
     # debater_code = tree.xpath('//div[@class="main"]/h2/text()')[0].strip()
 
     debater_info_by_name[debater_name].add((debater_code, debater_school))
-
+    debater_info_by_code[debater_code].add((debater_name, debater_school))
 
     round_rows = tree.xpath('//div[@class="main"]/div[contains(@class, "row")]')
     rounds = []
@@ -159,11 +160,19 @@ for tournament_id in tournament_ids_ordered:
           opponent_code = convert_code_for_20873(opponent_code)
         opponent_code = manual_code_translation(opponent_code)
 
+        if len(debater_info_by_code[opponent_code]) > 1:
+          raise Exception(opponent_code, debater_info_by_code[opponent_code])
+        elif len(debater_info_by_code[opponent_code]) == 1:
+          opponent_name, opponent_school = next(iter(debater_info_by_code[opponent_code]))
+        else:
+          opponent_name, opponent_school = '', ''
+
         rounds.append({
           'round': row[0].text.strip(),
           'side': row[1].text.strip(),
           'opponent_code': opponent_code,
-          'opponent_id': int(row[2][0].get('href')[row[2][0].get('href').index('&entry_id=')+10:]),
+          'opponent_name': opponent_name,
+          'opponent_school': opponent_school,
           'judge': row[3][0][0][0].text.strip(),
           'result': row[3][0][1].text.strip(),
           'speaker_points': float(row[3][0][2][0][0].text.strip()) if len(row[3][0]) > 2 and len(row[3][0][2]) > 0 else -1
@@ -183,12 +192,20 @@ for tournament_id in tournament_ids_ordered:
             result = 'Bye'
           else:
             result = 'Bye (Loss)'
+        
+        if len(debater_info_by_code[opponent_code]) > 1:
+          raise Exception(opponent_code, debater_info_by_code[opponent_code])
+        elif len(debater_info_by_code[opponent_code]) == 1:
+          opponent_name, opponent_school = next(iter(debater_info_by_code[opponent_code]))
+        else:
+          opponent_name, opponent_school = '', ''
 
         rounds.append({
           'round': row[0].text.strip(),
           'side': row[1].text.strip(),
           'opponent_code': opponent_code,
-          'opponent_id': int(row[2][0].get('href')[row[2][0].get('href').index('&entry_id=')+10:]),
+          'opponent_name': opponent_name,
+          'opponent_school': opponent_school,
           'judge': [row[3][i][0][0].text.strip() for i in range(len(row[3]))],
           'result': result,
           'speaker_points': speaker_points,
@@ -216,7 +233,7 @@ def confidence(num_rounds):
     return 'low'
   
 elo_system = EloSystem()
-elo_system.run(results_data)
+elo_system.run(results_data, start, end)
 tierlist = elo_system.get_ratings()
 
 tierlist = sorted([(e, tierlist[e].name, tierlist[e].school, round(tierlist[e].rating), tierlist[e].rounds, confidence(tierlist[e].rounds), tierlist[e].get_winrate()) for e in tierlist], key=lambda tup: tup[3], reverse=True)
