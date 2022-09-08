@@ -161,7 +161,8 @@ for tournament_id in tournament_ids_ordered:
         opponent_code = manual_code_translation(opponent_code)
 
         if len(debater_info_by_code[opponent_code]) > 1:
-          raise Exception(opponent_code, debater_info_by_code[opponent_code])
+          # Do nothing, since don't know which one they are
+          pass
         elif len(debater_info_by_code[opponent_code]) == 1:
           opponent_name, opponent_school = next(iter(debater_info_by_code[opponent_code]))
         else:
@@ -194,7 +195,8 @@ for tournament_id in tournament_ids_ordered:
             result = 'Bye (Loss)'
         
         if len(debater_info_by_code[opponent_code]) > 1:
-          raise Exception(opponent_code, debater_info_by_code[opponent_code])
+          # Do nothing, since don't know which one they are
+          pass
         elif len(debater_info_by_code[opponent_code]) == 1:
           opponent_name, opponent_school = next(iter(debater_info_by_code[opponent_code]))
         else:
@@ -233,7 +235,7 @@ def confidence(num_rounds):
     return 'low'
   
 elo_system = EloSystem()
-elo_system.run(results_data, start, end)
+elo_system.run(results_data)
 tierlist = elo_system.get_ratings()
 
 tierlist = sorted([(e, tierlist[e].name, tierlist[e].school, round(tierlist[e].rating), tierlist[e].rounds, confidence(tierlist[e].rounds), tierlist[e].get_winrate()) for e in tierlist], key=lambda tup: tup[3], reverse=True)
