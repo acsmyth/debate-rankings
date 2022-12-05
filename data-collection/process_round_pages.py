@@ -64,11 +64,19 @@ def manual_code_translation(debater_code):
     'St Croix Prep ADe': 'St Croix Prep AD',
     'William P. Clements Independent MM': 'William P. Clements MM',
     'Westwood DLi': 'Westwood DL',
+    'Muzzi Khan': 'Harker MK',
   }
   if debater_code in manual_translations:
     return manual_translations[debater_code]
   return debater_code
 
+def manual_school_translation(debater_school):
+  manual_translations = {
+    'Muzzi': 'Harker',
+  }
+  if debater_school in manual_translations:
+    return manual_translations[debater_school]
+  return debater_school
 
 results_data = []
 debater_info_by_name = defaultdict(set)
@@ -125,7 +133,7 @@ for tournament_id in tournament_ids_ordered:
         manual_translations = {
           'Ansh Sheth': ('Harker AS', 'Harker'),
           'Max Perin': ('Sage MP', 'Sage'),
-          'Muzzi Khan': ('Muzzi Khan', 'Harker'),
+          'Muzzi Khan': ('Harker MK', 'Harker'),
           'Sofia Shah': ('Harker SS', 'Harker'),
           'Rahul Mulpuri': ('Harker RM', 'Harker'),
         }
@@ -140,6 +148,7 @@ for tournament_id in tournament_ids_ordered:
     debater_school = re.sub('\s+', ' ', debater_school)
 
     debater_code = manual_code_translation(debater_code)
+    debater_school = manual_school_translation(debater_school)
 
 
     # 2018-2019 format
