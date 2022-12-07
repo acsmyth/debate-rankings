@@ -10,11 +10,17 @@ def time_of_round(r1):
   date_obj = datetime.strptime(r1['date'], '%Y-%m-%d')
   round_order = [
     'Round 1',
+    'Rd1',
     'Round 2',
+    'Rd2',
     'Round 3',
+    'Rd3',
     'Round 4',
+    'Rd4',
     'Round 5',
+    'Rd5',
     'Round 6',
+    'Rd6',
     'Round 7',
     'Round 8',
     'Round 9',
@@ -24,6 +30,7 @@ def time_of_round(r1):
     'Triples',
     'LD Triples',
     'Triple',
+    'Trips',
     'T',
     'Sextodecimals',
     'Sextos',
@@ -32,6 +39,8 @@ def time_of_round(r1):
     'Doubleoctos',
     'Doubleoctofinals',
     'Double Octas',
+    'Doubl',
+    'Dbls',
     'Doub',
     'Dubs',
     'Dbl',
@@ -42,6 +51,7 @@ def time_of_round(r1):
     'Octas',
     'Octo',
     'Octs',
+    'Octa',
     'Octofinals',
     'Octafinals',
     'Octafinal',
@@ -175,8 +185,22 @@ class EloSystem:
     expected_a = 1 / (1 + 10**((r_b - r_a) / 400))
     expected_b = 1 / (1 + 10**((r_a - r_b) / 400))
     if isinstance(round_data['result'], list):
+      # Count # ballots won as % won
+      # actual_a = sum(1 if ballot == 'W' else 0 for ballot in round_data['result']) / len(round_data['result'])
+
+      # Count 3-0 wins exactly the same as 2-0 wins
+      # actual_a = 1 if sum(1 if ballot == 'W' else 0 for ballot in round_data['result']) > len(round_data['result']) // 2 else 0
+
+      # Count 3-0 wins as better than 2-1, but only slightly better
       actual_a = sum(1 if ballot == 'W' else 0 for ballot in round_data['result']) / len(round_data['result'])
-      actual_b = sum(0 if ballot == 'W' else 1 for ballot in round_data['result']) / len(round_data['result'])
+      if actual_a >= 0.5:
+        actual_a = actual_a + (1 - actual_a) * 9 / 10
+      else:
+        actual_a = actual_a - actual_a * 9 / 10
+      
+      actual_b = 1 - actual_a
+
+
       # Increase K for elim rounds with more judges
       debater_a_K *= 1.5
       debater_b_K *= 1.5
