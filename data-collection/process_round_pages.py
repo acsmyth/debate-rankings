@@ -8,6 +8,7 @@ import sqlite3
 from lxml import html
 from elo import EloSystem
 
+
 start = '2022-08-01'
 end = '2023-08-01'
 
