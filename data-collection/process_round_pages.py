@@ -62,6 +62,7 @@ def manual_code_translation(debater_code):
     'Northland Christian Hao': 'Northland Christian JH',
     'Height AW': 'Heights AW',
     'CleSpr EG': 'Clear Springs EG',
+    'Lexton ARa': 'Lexington AR',
 
     # old season
     'Lexington AMa': 'Lexington AM',
@@ -105,6 +106,7 @@ def manual_school_translation(debater_school):
 results_data = []
 debater_info_by_name = defaultdict(set)
 debater_info_by_code = defaultdict(set)
+debater_code_alias_mappings = {}
 
 entries_data = json.loads(entries_str)
 
@@ -112,75 +114,75 @@ tournament_ids_ordered = list(entries_data.keys())
 
 
 
+# Should be unnecessary since repeats what the alias mapping does
+# def convert_code_for_weird_format_tournaments(code, tournament_id):
+#   if 'BrxSci' in code:
+#     return code.replace('BrxSci', 'Bronx Science')
 
-def convert_code_for_weird_format_tournaments(code, tournament_id):
-  if 'BrxSci' in code:
-    return code.replace('BrxSci', 'Bronx Science')
-
-  if tournament_id == '22938':
-    if code == '0': return code
-    school = code[ : code.rindex(' ')].strip()
-    last_name = code[code.rindex(' ') + 1 : ].strip()
+#   if tournament_id == '22938':
+#     if code == '0': return code
+#     school = code[ : code.rindex(' ')].strip()
+#     last_name = code[code.rindex(' ') + 1 : ].strip()
     
-    # Try to pattern match with known data
-    matched_code = None
-    for name, debater_infos in debater_info_by_name.items():
-      for debater_info in debater_infos:
-        if last_name in name and (debater_info[0].startswith(school) \
-            or school.startswith(debater_info[0].split(' ')[0])) \
-            and debater_info[0].endswith(last_name[0]):
-          matched_code = debater_info[0]
-          break
-      if matched_code:
-        break
+#     # Try to pattern match with known data
+#     matched_code = None
+#     for name, debater_infos in debater_info_by_name.items():
+#       for debater_info in debater_infos:
+#         if last_name in name and (debater_info[0].startswith(school) \
+#             or school.startswith(debater_info[0].split(' ')[0])) \
+#             and debater_info[0].endswith(last_name[0]):
+#           matched_code = debater_info[0]
+#           break
+#       if matched_code:
+#         break
     
-    # Some manual fixes
-    if code in ('Cinco Ranch Muralidharan', 'Barbers Hill Conner', 'Cinco Ranch Barazi',
-                'Northland Christian Hao', 'L C Anderson Hiller', 'Stephen F Austin Goodgame',
-                'Langham Creek White', 'Langham Creek White', 'Claudia Taylor Johnson Abrams',
-                'Westwood Premkumar'):
-      matched_code = code
+#     # Some manual fixes
+#     if code in ('Cinco Ranch Muralidharan', 'Barbers Hill Conner', 'Cinco Ranch Barazi',
+#                 'Northland Christian Hao', 'L C Anderson Hiller', 'Stephen F Austin Goodgame',
+#                 'Langham Creek White', 'Langham Creek White', 'Claudia Taylor Johnson Abrams',
+#                 'Westwood Premkumar'):
+#       matched_code = code
 
-    # If still no match, let it be what it was before
-    if matched_code is None:
-      raise Exception('bad', code)
+#     # If still no match, let it be what it was before
+#     if matched_code is None:
+#       raise Exception('bad', code)
 
-    return matched_code
-  elif tournament_id == '24359':
-    # print(code)
-    parts = code.split(' ')
-    name_parts = parts[-2 : ]
-    name = ' '.join(name_parts).strip()
-    school = ' '.join(parts[ : -2]).strip()
+#     return matched_code
+#   elif tournament_id == '24359':
+#     # print(code)
+#     parts = code.split(' ')
+#     name_parts = parts[-2 : ]
+#     name = ' '.join(name_parts).strip()
+#     school = ' '.join(parts[ : -2]).strip()
 
-    maybe_code = school + ' ' + ''.join(w[0].upper() for w in name_parts)
+#     maybe_code = school + ' ' + ''.join(w[0].upper() for w in name_parts)
 
-    if name in debater_info_by_name and len(debater_info_by_name[name]) == 1:
-      debater_code, debater_school = next(iter(debater_info_by_name[name]))
-      if debater_school == school:
-        # Valid, checks out, since name and school matches
-        return debater_code
-      else:
-        raise Exception()
-    elif name in debater_info_by_name:
-      for possible_match in debater_info_by_name[name]:
-        if possible_match[0] == maybe_code or possible_match[1] == school:
-          # Name AND code (i.e. school) matches, so valid, checks out
-          return maybe_code
-      # No match - weird
-      raise Exception(name)
-    else:
-      if maybe_code == 'Dripping Springs Colton De LS': return 'Dripping Springs CDLS'
-      raise Exception('need manual fix')
-  elif tournament_id == '24641':
-    replacements = {
-      'NewSmi': 'Newman Smith',
-    }
-    for repl in replacements:
-      if repl in code:
-        return code.replace(repl, replacements[repl])
+#     if name in debater_info_by_name and len(debater_info_by_name[name]) == 1:
+#       debater_code, debater_school = next(iter(debater_info_by_name[name]))
+#       if debater_school == school:
+#         # Valid, checks out, since name and school matches
+#         return debater_code
+#       else:
+#         raise Exception()
+#     elif name in debater_info_by_name:
+#       for possible_match in debater_info_by_name[name]:
+#         if possible_match[0] == maybe_code or possible_match[1] == school:
+#           # Name AND code (i.e. school) matches, so valid, checks out
+#           return maybe_code
+#       # No match - weird
+#       raise Exception(name)
+#     else:
+#       if maybe_code == 'Dripping Springs Colton De LS': return 'Dripping Springs CDLS'
+#       raise Exception('need manual fix')
+#   elif tournament_id == '24641':
+#     replacements = {
+#       'NewSmi': 'Newman Smith',
+#     }
+#     for repl in replacements:
+#       if repl in code:
+#         return code.replace(repl, replacements[repl])
 
-  return code
+#   return code
 
 
 # Put last because of weird debater code formats
@@ -210,24 +212,47 @@ for tournament_id in tournament_ids_ordered:
       if len(letter_code) == 3 and (letter_code[0] + letter_code[1]).isupper() and letter_code[2].islower():
         debater_code = debater_code[ : debater_code.rindex(' ')] + ' ' + letter_code[ : 2]
 
+    # Hardcode fix for siblings
+    if entry_id == '4358428':
+      debater_code = 'Lamar RM'
+      debater_name = 'Rohan Mahendru'
+    if entry_id == '4358430':
+      debater_code = 'Lamar AM'
+      debater_name = 'Aarav Mahendru'
+    if entry_id == '4409247':
+      debater_code  = 'Garland AGi'
+      debater_name = 'Amrik Gill'
+    if entry_id == '4440120':
+      debater_code = 'Garland NG'
+      debater_name = 'Noorpreet Gill'
+
+
     debater_name = tree.xpath('//div[@class="main"]/div/span/h4/text()')[0].strip()
     debater_name = re.sub('\s+', ' ', debater_name)
-
+    
+    # Override duplicate codes
+    if debater_name == 'Amrik Gill':
+      debater_code = 'Garland AGi'
+    if debater_name == 'Aditi Rajvanshi':
+      debater_code = 'Lexington ARaj'
+    
     debater_school = debater_code[ : debater_code.rindex(' ')]
 
-    
+
+
+
+    original_debater_code = debater_code
+
     # Manual interventions
     if 'BrxSci' in debater_code:
       debater_code = debater_code.replace('BrxSci', 'Bronx Science')
       debater_school = 'Bronx Science'
-    
-    if debater_name == 'Jul162007 Grove':
-      debater_name = 'J. Grove'
 
     if debater_code == 'Southlake Carroll AS':
       debater_name = 'Aditya Shetty'
 
     if tournament_id == '24359':
+      if debater_code == 'Lexington ARaj': continue
       debater_initials = ''.join(w[0] for w in debater_name.split(' '))
       debater_school = debater_code[ : debater_code.index(debater_name)].strip()
       debater_code = debater_school + ' ' + debater_initials
@@ -258,10 +283,16 @@ for tournament_id in tournament_ids_ordered:
           debater_school = debater_code[ : debater_code.rindex(' ')]
           initials = ''.join(w[0] for w in debater_name.split(' '))
           debater_code = debater_school + ' ' + initials
+
         else:
           # print(debater_code)
           pass
 
+    # Override duplicate
+    if debater_name == 'Amrik Gill':
+      debater_code = 'Garland AGi'
+    if debater_name == 'Aditi Rajvanshi':
+      debater_code = 'Lexington ARaj'
     
     # Make sure no excess spaces anywhere
     debater_code = re.sub('\s+', ' ', debater_code)
@@ -270,6 +301,12 @@ for tournament_id in tournament_ids_ordered:
 
     debater_code = manual_code_translation(debater_code)
     debater_school = manual_school_translation(debater_school)
+
+    if original_debater_code != debater_code:
+      if original_debater_code in debater_code_alias_mappings and debater_code_alias_mappings[original_debater_code] != debater_code:
+        raise Exception('Unexpected', original_debater_code, debater_code, debater_code_alias_mappings[original_debater_code], tournament_id)
+      
+      debater_code_alias_mappings[original_debater_code] = debater_code
 
 
     # 2018-2019 format
@@ -283,6 +320,28 @@ for tournament_id in tournament_ids_ordered:
     all_entry_data.append((entry_id, tree, debater_code, debater_name, debater_school))
 
 
+
+  def fix_siblings_issues(opponent_code, row):
+    # Manual fixes for weird siblings / other scenarios
+    if opponent_code == 'Garland Gill':
+      opponent_entry_id = row[2][0].get('href').split('=')[-1]
+      if opponent_entry_id == '4409247':
+        opponent_code = 'Garland AGi'
+      elif opponent_entry_id == '4440120':
+        opponent_code = 'Garland NG'
+    elif opponent_code == 'Lamar Mahendru':
+      opponent_entry_id = row[2][0].get('href').split('=')[-1]
+      if opponent_entry_id == '4358428':
+        opponent_code = 'Lamar RM'
+      elif opponent_entry_id == '4358430':
+        opponent_code = 'Lamar AM'
+    elif opponent_code == 'Lexington AR':
+      opponent_entry_id = row[2][0].get('href').split('=')[-1]
+      if opponent_entry_id in ('4250762', '4322257'):
+        opponent_code = 'Lexington ARaj'
+    
+    return opponent_code
+
   for entry_id, tree, debater_code, debater_name, debater_school in all_entry_data:
     round_rows = tree.xpath('//div[@class="main"]/div[contains(@class, "row")]')
     rounds = []
@@ -293,8 +352,13 @@ for tournament_id in tournament_ids_ordered:
       elif len(row[3]) == 1:
         opponent_code = row[2][0].text.strip()[3:]
         opponent_code = re.sub('\s+', ' ', opponent_code)
-        opponent_code = convert_code_for_weird_format_tournaments(opponent_code, tournament_id)
+        # opponent_code = convert_code_for_weird_format_tournaments(opponent_code, tournament_id)
         opponent_code = manual_code_translation(opponent_code)
+        
+        if opponent_code in debater_code_alias_mappings:
+          opponent_code = debater_code_alias_mappings[opponent_code]
+        opponent_code = fix_siblings_issues(opponent_code, row)
+
 
         result = row[3][0][1].text.strip()
         if result not in ('W', 'L'):
@@ -324,8 +388,12 @@ for tournament_id in tournament_ids_ordered:
       else:
         opponent_code = row[2][0].text.strip()[3:]
         opponent_code = re.sub('\s+', ' ', opponent_code)
-        opponent_code = convert_code_for_weird_format_tournaments(opponent_code, tournament_id)
+        # opponent_code = convert_code_for_weird_format_tournaments(opponent_code, tournament_id)
         opponent_code = manual_code_translation(opponent_code)
+
+        if opponent_code in debater_code_alias_mappings:
+          opponent_code = debater_code_alias_mappings[opponent_code]
+        opponent_code = fix_siblings_issues(opponent_code, row)
 
         result = [row[3][i][1].text.strip() for i in range(len(row[3]))]
         speaker_points = float(row[3][0][2][0][0].text.strip()) if len(row[3][0]) > 2 and len(row[3][0][2]) > 0 else -1

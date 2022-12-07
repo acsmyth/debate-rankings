@@ -81,7 +81,7 @@ def time_of_round(r1):
   return date_obj.timestamp() + round_order.index(r1['round'])
 
 class Debater:
-  def __init__(self, code, name='', school='', rating=2480):
+  def __init__(self, code, name='', school='', rating=2440):
     self.code = code
     self.name = name
     self.school = school
@@ -202,8 +202,8 @@ class EloSystem:
 
 
       # Increase K for elim rounds with more judges
-      debater_a_K *= 1.5
-      debater_b_K *= 1.5
+      debater_a_K *= 2
+      debater_b_K *= 2
     else:
       actual_a = 1 if round_data['result'] == 'W' else 0
       actual_b = 0 if round_data['result'] == 'W' else 1
