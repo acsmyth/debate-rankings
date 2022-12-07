@@ -8,8 +8,8 @@ import sqlite3
 from lxml import html
 from elo import EloSystem
 
-start = '2021-08-01'
-end = '2022-08-01'
+start = '2022-08-01'
+end = '2023-08-01'
 
 args = copy.deepcopy(sys.argv[1:])
 for arg in args:
