@@ -296,6 +296,13 @@ for tournament_id in tournament_ids_ordered:
         opponent_code = convert_code_for_weird_format_tournaments(opponent_code, tournament_id)
         opponent_code = manual_code_translation(opponent_code)
 
+        result = row[3][0][1].text.strip()
+        if result not in ('W', 'L'):
+          if row[1].text.strip() == 'Bye':
+            result = 'Bye'
+          else:
+            result = 'Bye (Loss)'
+
         if len(debater_info_by_code[opponent_code]) > 1:
           # Do nothing, since don't know which one they are
           pass
@@ -311,7 +318,7 @@ for tournament_id in tournament_ids_ordered:
           'opponent_name': opponent_name,
           'opponent_school': opponent_school,
           'judge': row[3][0][0][0].text.strip(),
-          'result': row[3][0][1].text.strip(),
+          'result': result,
           'speaker_points': float(row[3][0][2][0][0].text.strip()) if len(row[3][0]) > 2 and len(row[3][0][2]) > 0 else -1
         })
       else:
