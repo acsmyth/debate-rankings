@@ -122,7 +122,7 @@ def convert_code_for_weird_format_tournaments(code, tournament_id):
     matched_code = None
     for name, debater_infos in debater_info_by_name.items():
       for debater_info in debater_infos:
-        if debater_info[0].startswith(school) or school.startswith(debater_info[0].split(' ')[0]) and debater_info[0].endswith(last_name[0]) and last_name in name:
+        if last_name in name and debater_info[0].startswith(school) or school.startswith(debater_info[0].split(' ')[0]) and debater_info[0].endswith(last_name[0]):
           matched_code = debater_info[0]
           break
       if matched_code:
