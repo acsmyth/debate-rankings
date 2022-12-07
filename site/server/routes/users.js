@@ -72,6 +72,7 @@ router.get("/get_debater", (req, res) => {
       throw err;
     }
     console.log(rows);
+    if (rows[0] === undefined) rows = [{}];
     res.json(rows[0]);
   });
   db.close();
