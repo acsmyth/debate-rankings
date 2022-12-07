@@ -89,7 +89,7 @@ class RankingsPage extends React.Component {
         <div style={{ height: "78vh", width: "70%", margin: "auto" }}>
           {this.state.loading === 2 && (
             <DataGrid
-              rows={this.state.rankings}
+              rows={this.state.rankings.slice(0, 250)}
               columns={this.columns}
               rowsPerPageOptions={[]}
             />
