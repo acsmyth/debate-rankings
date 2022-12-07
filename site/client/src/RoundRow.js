@@ -15,7 +15,11 @@ class RoundRow extends React.Component {
     }
     const opponentForUrl = opponent.replaceAll(" ", "_");
     const opponentForDisplay = opponent.replaceAll("_", " ");
-    return <Link to={`/debater?code=${opponentForUrl}`}>{"vs " + opponentForDisplay}</Link>;
+    return (
+      <Link to={`/debater?code=${opponentForUrl}`}>
+        {"vs " + opponentForDisplay}
+      </Link>
+    );
   };
 
   getResult = () => {
@@ -118,7 +122,12 @@ class RoundRow extends React.Component {
         {this.getOpponent()}
         <span className="round_name">{this.props.round.round}</span>
         <span className="tournament_name">
-          {this.props.round.tournament_name}
+          <a
+            href={`https://tabroom.com/index/tourn/index.mhtml?tourn_id=${this.props.round.tournament_id}`}
+            target="_blank"
+          >
+            {this.props.round.tournament_name}
+          </a>
         </span>
         <span className="elo_change">{this.getEloChange()}</span>
         <span className="date">{this.getDate()}</span>
