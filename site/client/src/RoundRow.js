@@ -15,8 +15,15 @@ class RoundRow extends React.Component {
     }
     const opponentForUrl = opponent.replaceAll(" ", "_");
     const opponentForDisplay = opponent.replaceAll("_", " ");
-    return (
+    const haveDataOnOpponent = this.props.allDebaters.some(
+      (debater) => debater.code === opponent
+    );
+    return haveDataOnOpponent ? (
       <Link to={`/debater?code=${opponentForUrl}`}>
+        {"vs " + opponentForDisplay}
+      </Link>
+    ) : (
+      <Link style={{ pointerEvents: "none", textDecoration: "none" }}>
         {"vs " + opponentForDisplay}
       </Link>
     );

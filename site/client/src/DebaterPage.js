@@ -111,6 +111,7 @@ class DebaterPage extends React.Component {
                   debater={this.state.debater}
                   key={index}
                   rowIndex={index}
+                  allDebaters={this.state.allDebaters}
                 />
               ))}
             </div>
