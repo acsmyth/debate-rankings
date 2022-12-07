@@ -58,6 +58,10 @@ def manual_code_translation(debater_code):
     'Lexington MLe': 'Lexington ML',
     'William P. Clements Independent KK': 'William P. Clements KK',
     'Dripping Springs CD': 'Dripping Springs CDLS',
+    'NorChr JH': 'Northland Christian JH',
+    'Northland Christian Hao': 'Northland Christian JH',
+    'Height AW': 'Heights AW',
+    'CleSpr EG': 'Clear Springs EG',
 
     # old season
     'Lexington AMa': 'Lexington AM',
@@ -122,20 +126,23 @@ def convert_code_for_weird_format_tournaments(code, tournament_id):
     matched_code = None
     for name, debater_infos in debater_info_by_name.items():
       for debater_info in debater_infos:
-        if last_name in name and debater_info[0].startswith(school) or school.startswith(debater_info[0].split(' ')[0]) and debater_info[0].endswith(last_name[0]):
+        if last_name in name and (debater_info[0].startswith(school) \
+            or school.startswith(debater_info[0].split(' ')[0])) \
+            and debater_info[0].endswith(last_name[0]):
           matched_code = debater_info[0]
           break
       if matched_code:
         break
     
     # Some manual fixes
-    if code in ('Cinco Ranch Muralidharan', 'Barbers Hill Conner', 'Cinco Ranch Barazi'):
+    if code in ('Cinco Ranch Muralidharan', 'Barbers Hill Conner', 'Cinco Ranch Barazi',
+                'Northland Christian Hao', 'L C Anderson Hiller', 'Stephen F Austin Goodgame',
+                'Langham Creek White', 'Langham Creek White', 'Claudia Taylor Johnson Abrams',
+                'Westwood Premkumar'):
       matched_code = code
-    
 
     # If still no match, let it be what it was before
     if matched_code is None:
-      # TODO: these are a problem
       raise Exception('bad', code)
 
     return matched_code
@@ -165,8 +172,15 @@ def convert_code_for_weird_format_tournaments(code, tournament_id):
     else:
       if maybe_code == 'Dripping Springs Colton De LS': return 'Dripping Springs CDLS'
       raise Exception('need manual fix')
+  elif tournament_id == '24641':
+    replacements = {
+      'NewSmi': 'Newman Smith',
+    }
+    for repl in replacements:
+      if repl in code:
+        return code.replace(repl, replacements[repl])
 
-  return opponent_code
+  return code
 
 
 # Put last because of weird debater code formats
@@ -210,6 +224,9 @@ for tournament_id in tournament_ids_ordered:
     if debater_name == 'Jul162007 Grove':
       debater_name = 'J. Grove'
 
+    if debater_code == 'Southlake Carroll AS':
+      debater_name = 'Aditya Shetty'
+
     if tournament_id == '24359':
       debater_initials = ''.join(w[0] for w in debater_name.split(' '))
       debater_school = debater_code[ : debater_code.index(debater_name)].strip()
@@ -227,9 +244,12 @@ for tournament_id in tournament_ids_ordered:
           },
           'Shruti Narayanabhatla': {
             'Ridge': ('Ridge SN', 'Ridge'),
+          },
+          'Lula Wang': {
+            'Easter': ('Eastern LW', 'Eastern'),
           }
         }
-        # debater_code, debater_school = manual_translations[debater_name][debater_school]
+        debater_code, debater_school = manual_translations[debater_name][debater_school]
       else:
         # Do nothing, since first time seeing them
 
@@ -238,6 +258,10 @@ for tournament_id in tournament_ids_ordered:
           debater_school = debater_code[ : debater_code.rindex(' ')]
           initials = ''.join(w[0] for w in debater_name.split(' '))
           debater_code = debater_school + ' ' + initials
+        else:
+          # print(debater_code)
+          pass
+
     
     # Make sure no excess spaces anywhere
     debater_code = re.sub('\s+', ' ', debater_code)
