@@ -122,15 +122,21 @@ def convert_code_for_weird_format_tournaments(code, tournament_id):
     matched_code = None
     for name, debater_infos in debater_info_by_name.items():
       for debater_info in debater_infos:
-        if debater_info[0].startswith(school) and debater_info[0].endswith(last_name[0]) and last_name in name:
+        if debater_info[0].startswith(school) or school.startswith(debater_info[0].split(' ')[0]) and debater_info[0].endswith(last_name[0]) and last_name in name:
           matched_code = debater_info[0]
           break
       if matched_code:
         break
     
+    # Some manual fixes
+    if code in ('Cinco Ranch Muralidharan', 'Barbers Hill Conner', 'Cinco Ranch Barazi'):
+      matched_code = code
+    
+
     # If still no match, let it be what it was before
     if matched_code is None:
-      matched_code = code
+      # TODO: these are a problem
+      raise Exception('bad', code)
 
     return matched_code
   elif tournament_id == '24359':
@@ -200,6 +206,9 @@ for tournament_id in tournament_ids_ordered:
     if 'BrxSci' in debater_code:
       debater_code = debater_code.replace('BrxSci', 'Bronx Science')
       debater_school = 'Bronx Science'
+    
+    if debater_name == 'Jul162007 Grove':
+      debater_name = 'J. Grove'
 
     if tournament_id == '24359':
       debater_initials = ''.join(w[0] for w in debater_name.split(' '))
