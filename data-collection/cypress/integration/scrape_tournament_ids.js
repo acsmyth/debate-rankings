@@ -11,7 +11,7 @@ const getIdFromUrl = (url) => {
   return parseInt(url.slice(idx + 10));
 };
 
-describe("Scrape Round Data", () => {
+describe("Scrape Tournament Ids", () => {
   it("Scrape", () => {
     cy.readFile("tabroom/bid_tournament_names.json").each((tournamentName) => {
       cy.visit("https://www.tabroom.com/index/index.mhtml");
