@@ -4,7 +4,6 @@ import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import RankingsPage from "./RankingsPage";
 import DebaterPage from "./DebaterPage";
-import HomePage from "./HomePage";
 
 const theme = createTheme({
   // palette: {

@@ -18,8 +18,12 @@ class Header extends React.Component {
       <div className="header">
         <Logo />
         <SearchBar options={this.buildOptions()} />
-        <a href="https://github.com/acsmyth/debate-rankings" target="_blank">
-          <img src="github_logo.svg" width="30" />
+        <a
+          href="https://github.com/acsmyth/debate-rankings"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src="github_logo.svg" width="30" alt="GitHub logo" />
         </a>
       </div>
     );

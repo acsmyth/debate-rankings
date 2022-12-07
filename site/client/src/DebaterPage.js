@@ -22,7 +22,7 @@ class DebaterPage extends React.Component {
 
   getRank = () => {
     const idx = this.state.rankings.findIndex(
-      (debater) => debater.code == this.state.debater.code
+      (debater) => debater.code === this.state.debater.code
     );
     if (idx === -1) {
       return (
@@ -78,7 +78,7 @@ class DebaterPage extends React.Component {
       .then((debater) => {
         this.setState({ debater });
         this.loaded();
-        if (Object.keys(debater).length == 0) {
+        if (Object.keys(debater).length === 0) {
           this.setState({ dataMissing: true });
         }
       });

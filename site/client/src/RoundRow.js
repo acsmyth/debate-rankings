@@ -125,6 +125,7 @@ class RoundRow extends React.Component {
           <a
             href={`https://tabroom.com/index/tourn/index.mhtml?tourn_id=${this.props.round.tournament_id}`}
             target="_blank"
+            rel="noreferrer"
           >
             {this.props.round.tournament_name}
           </a>
