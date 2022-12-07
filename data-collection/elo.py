@@ -81,7 +81,7 @@ def time_of_round(r1):
   return date_obj.timestamp() + round_order.index(r1['round'])
 
 class Debater:
-  def __init__(self, code, name='', school='', rating=2500):
+  def __init__(self, code, name='', school='', rating=2480):
     self.code = code
     self.name = name
     self.school = school
@@ -177,8 +177,8 @@ class EloSystem:
     self.rounds = rounds
   
   def run_round(self, debater_a, debater_b, round_data):
-    debater_a_K = 20
-    debater_b_K = 20
+    debater_a_K = 25
+    debater_b_K = 25
 
     r_a = debater_a.rating
     r_b = debater_b.rating
