@@ -1,12 +1,15 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: Googlebot
 Disallow: /debater
+Disallow: /api/
 
 User-agent: AdsBot-Google
 Disallow: /debater
+Disallow: /api/
 
 User-agent: Googlebot-Image
 Disallow: /debater
+Disallow: /api/
 
 User-agent: *
 Disallow: /
