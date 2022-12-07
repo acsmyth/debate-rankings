@@ -13,6 +13,7 @@ class DebaterPage extends React.Component {
     loading: 0,
     rankings: [],
     allDebaters: [],
+    dataMissing: false,
   };
 
   getWinrate = () => {
@@ -77,6 +78,9 @@ class DebaterPage extends React.Component {
       .then((debater) => {
         this.setState({ debater });
         this.loaded();
+        if (Object.keys(debater).length == 0) {
+          this.setState({ dataMissing: true });
+        }
       });
   }
 
@@ -85,27 +89,33 @@ class DebaterPage extends React.Component {
     return (
       <div className="DebaterPage">
         <Header debaterData={this.state.allDebaters} />
-        <h1>{this.state.debater.name}</h1>
-        <h3>{this.state.debater.code}</h3>
-        <br />
-        <div className="debater_info">
-          {this.hasAllInfo() && <h4>{this.getRank()}</h4>}
-          <h4>{`Elo: ${this.state.debater.elo}`}</h4>
-          <h4>{`Winrate: ${this.getWinrate()}`}</h4>
-          <h4>{`Rounds: ${this.state.debater.num_rounds}`}</h4>
-        </div>
-        <br />
-        <br />
-        <div className="rounds">
-          {this.state.rounds.map((round, index) => (
-            <RoundRow
-              round={round}
-              debater={this.state.debater}
-              key={index}
-              rowIndex={index}
-            />
-          ))}
-        </div>
+        {this.state.dataMissing ? (
+          <h1>Unknown debater code</h1>
+        ) : (
+          <>
+            <h1>{this.state.debater.name}</h1>
+            <h3>{this.state.debater.code}</h3>
+            <br />
+            <div className="debater_info">
+              {this.hasAllInfo() && <h4>{this.getRank()}</h4>}
+              <h4>{`Elo: ${this.state.debater.elo}`}</h4>
+              <h4>{`Winrate: ${this.getWinrate()}`}</h4>
+              <h4>{`Rounds: ${this.state.debater.num_rounds}`}</h4>
+            </div>
+            <br />
+            <br />
+            <div className="rounds">
+              {this.state.rounds.map((round, index) => (
+                <RoundRow
+                  round={round}
+                  debater={this.state.debater}
+                  key={index}
+                  rowIndex={index}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     );
   }

@@ -85,7 +85,7 @@ class RankingsPage extends React.Component {
     return (
       <div className="RankingsPage">
         <Header debaterData={this.state.allDebaters} />
-        <h1>2021-2022 Lincoln-Douglas Debate Rankings</h1>
+        <h1>2022-2023 Lincoln-Douglas Debate Rankings</h1>
         <div style={{ height: "78vh", width: "70%", margin: "auto" }}>
           {this.state.loading === 2 && (
             <DataGrid
