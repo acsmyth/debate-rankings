@@ -36,7 +36,7 @@ def move_to_end(x, l):
 
 def manual_code_translation(debater_code):
   manual_translations = {
-    'Southlake Carroll Shetty': 'Southlake Carroll ASh',
+    'Southlake Carroll Shetty': 'Southlake Carroll AS',
     'Oak Ridge INDEPENDENT AH': 'Oak Ridge AH',
     'Oak Ridge INDEPENDENT AA': 'Oak Ridge AA', 
     'Central Jersey Senior AS': 'Princeton AS',
@@ -235,6 +235,10 @@ for tournament_id in tournament_ids_ordered:
       debater_code = 'Garland AGi'
     if debater_name == 'Aditi Rajvanshi':
       debater_code = 'Lexington ARaj'
+    if debater_name == 'Aarush Sathu':
+      debater_code = 'Southlake Carroll ASa'
+    if debater_code == 'Southlake Carroll ASh':
+      debater_code = 'Southlake Carroll AS'
     
     debater_school = debater_code[ : debater_code.rindex(' ')]
 
@@ -253,6 +257,7 @@ for tournament_id in tournament_ids_ordered:
 
     if tournament_id == '24359':
       if debater_code == 'Lexington ARaj': continue
+      if debater_code == 'Southlake Carroll ASa': continue
       debater_initials = ''.join(w[0] for w in debater_name.split(' '))
       debater_school = debater_code[ : debater_code.index(debater_name)].strip()
       debater_code = debater_school + ' ' + debater_initials
@@ -293,6 +298,8 @@ for tournament_id in tournament_ids_ordered:
       debater_code = 'Garland AGi'
     if debater_name == 'Aditi Rajvanshi':
       debater_code = 'Lexington ARaj'
+    if debater_name == 'Aarush Sathu':
+      debater_code = 'Southlake Carroll ASa'
     
     # Make sure no excess spaces anywhere
     debater_code = re.sub('\s+', ' ', debater_code)
@@ -339,6 +346,12 @@ for tournament_id in tournament_ids_ordered:
       opponent_entry_id = row[2][0].get('href').split('=')[-1]
       if opponent_entry_id in ('4250762', '4322257'):
         opponent_code = 'Lexington ARaj'
+    elif opponent_code == 'Southlake Carroll AS':
+      opponent_entry_id = row[2][0].get('href').split('=')[-1]
+      if opponent_entry_id == '4219491':
+        opponent_code = 'Southlake Carroll ASa'
+    elif opponent_code == 'Southlake Carroll ASh':
+      opponent_code = 'Southlake Carroll AS'
     
     return opponent_code
 
