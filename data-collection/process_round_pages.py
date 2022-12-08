@@ -36,6 +36,10 @@ def move_to_end(x, l):
 
 def manual_code_translation(debater_code):
   manual_translations = {
+    'Westlake Cui': 'Westlake CCu',
+    'Westlake Conklin': 'Westlake CC',
+    'Strake Jesuit DAr': 'Strake Jesuit DA',
+    'Strake Jesuit RCh': 'Strake Jesuit RC',
     'Southlake Carroll Shetty': 'Southlake Carroll AS',
     'Oak Ridge INDEPENDENT AH': 'Oak Ridge AH',
     'Oak Ridge INDEPENDENT AA': 'Oak Ridge AA', 
@@ -225,10 +229,13 @@ for tournament_id in tournament_ids_ordered:
     if entry_id == '4440120':
       debater_code = 'Garland NG'
       debater_name = 'Noorpreet Gill'
+    if entry_id == '4355421':
+      debater_code = 'Westlake CCu'
 
 
     debater_name = tree.xpath('//div[@class="main"]/div/span/h4/text()')[0].strip()
     debater_name = re.sub('\s+', ' ', debater_name)
+    debater_school = debater_code[ : debater_code.rindex(' ')]
     
     # Override duplicate codes
     if debater_name == 'Amrik Gill':
@@ -239,8 +246,8 @@ for tournament_id in tournament_ids_ordered:
       debater_code = 'Southlake Carroll ASa'
     if debater_code == 'Southlake Carroll ASh':
       debater_code = 'Southlake Carroll AS'
-    
-    debater_school = debater_code[ : debater_code.rindex(' ')]
+    if debater_name == 'Cynthia Cui' and debater_school == 'Westlake':
+      debater_code = 'Westlake CCu'
 
 
 
@@ -299,6 +306,8 @@ for tournament_id in tournament_ids_ordered:
       debater_code = 'Lexington ARaj'
     if debater_name == 'Aarush Sathu':
       debater_code = 'Southlake Carroll ASa'
+    if debater_name == 'Cynthia Cui':
+      debater_code = 'Westlake CCu'
     
     # Make sure no excess spaces anywhere
     debater_code = re.sub('\s+', ' ', debater_code)
@@ -351,6 +360,14 @@ for tournament_id in tournament_ids_ordered:
         opponent_code = 'Southlake Carroll ASa'
     elif opponent_code == 'Southlake Carroll ASh':
       opponent_code = 'Southlake Carroll AS'
+    elif opponent_code == 'Lexington Aditi Rajvanshi':
+      opponent_code = 'Lexington ARaj'
+    elif opponent_code == 'Southlake Carroll Aarush Sathu':
+      opponent_code = 'Southlake Carroll ASa'
+    elif opponent_code == 'Westlake CC':
+      opponent_entry_id = row[2][0].get('href').split('=')[-1]
+      if opponent_entry_id == '4355421':
+        opponent_code = 'Westlake CCu'
     
     return opponent_code
 
