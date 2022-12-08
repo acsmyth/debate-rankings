@@ -256,11 +256,10 @@ for tournament_id in tournament_ids_ordered:
       debater_name = 'Aditya Shetty'
 
     if tournament_id == '24359':
-      if debater_code == 'Lexington ARaj': continue
-      if debater_code == 'Southlake Carroll ASa': continue
-      debater_initials = ''.join(w[0] for w in debater_name.split(' '))
-      debater_school = debater_code[ : debater_code.index(debater_name)].strip()
-      debater_code = debater_school + ' ' + debater_initials
+      if debater_code not in ('Lexington ARaj', 'Southlake Carroll ASa'):
+        debater_initials = ''.join(w[0] for w in debater_name.split(' '))
+        debater_school = debater_code[ : debater_code.index(debater_name)].strip()
+        debater_code = debater_school + ' ' + debater_initials
     elif tournament_id in ('24641', '22938', '25264'):
       if debater_name in debater_info_by_name and len(debater_info_by_name[debater_name]) == 1:
         debater_code, debater_school = next(iter(debater_info_by_name[debater_name]))
