@@ -10,7 +10,7 @@ const theme = createTheme({
   //   type: "dark",
   // },
   typography: {
-    fontFamily: "Lato",
+    fontFamily: "Ubuntu",
     fontSize: 12,
   },
   // overrides: {
