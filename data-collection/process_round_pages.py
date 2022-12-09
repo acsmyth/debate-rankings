@@ -198,6 +198,8 @@ move_to_end('24359', tournament_ids_ordered)
 for tournament_id in tournament_ids_ordered:
   date = next(e['date'] for e in tournament_data if e['id'] == int(tournament_id))
   name = next(e['name'] for e in tournament_data if e['id'] == int(tournament_id))
+  if name == 'YALE UNIVERSITY INVITATIONAL':
+    name = 'Yale University Invitational'
 
   # First, get load all entry pages and get debater code / name / school
   all_entry_data = []
