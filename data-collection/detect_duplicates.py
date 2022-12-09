@@ -13,14 +13,19 @@ for row in rows:
   debater_codes.update([debater_a_code, debater_b_code])
 
 # Look for people with same name but different codes
-# same_found = set()
-# for row1 in rows:
-#   for row2 in rows:
-#     if row1 == row2: continue
-#     if row1[2] == row2[2] and row1[1] != row2[1]:
-#       same_found.add((row1[2], row1[1], row2[1]))
-# for ele in same_found:
-#   print(ele)
+same_found = set()
+for row1 in rows:
+  for row2 in rows:
+    if row1 == row2: continue
+    if row1[2] == row2[2] and row1[1] != row2[1]:
+      same_found.add((row1[2], row1[1], row2[1]))
+
+# Exclude known ones that are valid
+same_found = set([e for e in same_found if e[0] not in ('Andrew Park', 'Lula Wang', 'Michael Meng')])
+for ele in same_found:
+  print(ele)
+if len(same_found) == 0:
+  print('No duplicate codes found!')
 
 # Look for duplicate rounds
 found_duplicate = False
@@ -34,7 +39,7 @@ for code in debater_codes:
         found_duplicate = True
 
 if not found_duplicate:
-  print('No duplicates found!')
+  print('No duplicate rounds found!')
 
 
 con.close()
