@@ -266,6 +266,13 @@ for tournament_id in tournament_ids_ordered:
     if 'Memori ' in debater_code:
       debater_code = debater_code.replace('Memori', 'Memorial')
       debater_school = 'Memorial'
+    if 'Woodla ' in debater_code:
+      debater_code = debater_code.replace('Woodla', 'Woodlands')
+      debater_school = 'Woodlands'
+    if 'CleLak' in debater_code:
+      debater_code = debater_code.replace('CleLak', 'Clear Lake')
+      debater_school = 'Clear Lake'
+
 
     if debater_code == 'Southlake Carroll AS':
       debater_name = 'Aditya Shetty'
