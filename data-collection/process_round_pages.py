@@ -257,9 +257,15 @@ for tournament_id in tournament_ids_ordered:
     original_debater_code = debater_code
 
     # Manual interventions
-    if 'BrxSci' in debater_code:
+    if 'BrxSci ' in debater_code:
       debater_code = debater_code.replace('BrxSci', 'Bronx Science')
       debater_school = 'Bronx Science'
+    if 'Strake ' in debater_code and 'Jesuit' not in debater_code:
+      debater_code = debater_code.replace('Strake', 'Strake Jesuit')
+      debater_school = 'Strake Jesuit'
+    if 'Memori ' in debater_code:
+      debater_code = debater_code.replace('Memori', 'Memorial')
+      debater_school = 'Memorial'
 
     if debater_code == 'Southlake Carroll AS':
       debater_name = 'Aditya Shetty'
@@ -275,7 +281,7 @@ for tournament_id in tournament_ids_ordered:
       elif debater_name in debater_info_by_name:
         manual_translations = {
           'Michael Meng': {
-            'Strake': ('Strake Jesuit MM', 'Strake Jesuit'),
+            'Strake Jesuit': ('Strake Jesuit MM', 'Strake Jesuit'),
           },
           'Aditya Shetty': {
             'Southlake Carroll': ('Southlake Carroll AS', 'Southlake Carroll'),
