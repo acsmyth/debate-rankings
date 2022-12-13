@@ -106,13 +106,22 @@ class DebaterPage extends React.Component {
             <br />
             <div className="rounds">
               {this.state.rounds.map((round, index) => (
-                <RoundRow
-                  round={round}
-                  debater={this.state.debater}
-                  key={index}
-                  rowIndex={index}
-                  allDebaters={this.state.allDebaters}
-                />
+                <>
+                  <RoundRow
+                    round={round}
+                    debater={this.state.debater}
+                    key={index}
+                    rowIndex={index}
+                    allDebaters={this.state.allDebaters}
+                  />
+                  {index + 1 < this.state.rounds.length &&
+                  this.state.rounds[index + 1].tournament_id !=
+                    round.tournament_id ? (
+                    <>
+                      <br /> <br />
+                    </>
+                  ) : null}
+                </>
               ))}
             </div>
           </>
