@@ -7,7 +7,7 @@ class Logo extends React.Component {
         <img
           src="logo_wide_white_text.png"
           style={{ width: "250px", position: "absolute", left: 12, top: 17 }}
-          alt="Debate Rankings logo"
+          alt="Debate Rankings"
         />
       </a>
     );
