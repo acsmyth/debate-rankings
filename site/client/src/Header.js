@@ -23,7 +23,7 @@ class Header extends React.Component {
           target="_blank"
           rel="noreferrer"
         >
-          <img src="github_logo.svg" width="30" alt="GitHub logo" />
+          <img src="github_logo.svg" width="30" alt="GitHub" />
         </a>
       </div>
     );
