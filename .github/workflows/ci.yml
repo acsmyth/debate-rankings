@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd site/client && npm build
+      - run: cd site/client && npm run build
       - name: Initialize Backend
         run: cd site/server && npm start
       - name: Initialize Frontend
