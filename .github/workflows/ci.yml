@@ -16,7 +16,7 @@ jobs:
           nvm use 16
           cd site/client
           npm install
-          NODE_OPTIONS='--openssl-legacy-provider' npm run build
+          npm run build
       - name: Start Backend
         run: cd site/server && npm start
       - name: Start Frontend
