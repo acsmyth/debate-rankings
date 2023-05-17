@@ -10,8 +10,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: npm install
         run: cd site/client && npm install
+      - run: node --version
       - name: NODE_OPTIONS='--openssl-legacy-provider' npm run build
-        run: nvm use 16 && cd site/client && npm run build
+        run: cd site/client && npm run build
       - name: Start Backend
         run: cd site/server && npm start
       - name: Start Frontend
