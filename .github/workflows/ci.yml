@@ -19,9 +19,11 @@ jobs:
           cd ../server
           npm install
       - name: Start Backend
-        run: cd site/server && npm start
+        run: cd site/server && npm start &
       - name: Start Frontend
-        run: cd site/client && npm start
+        run: cd site/client && npm start &
 
       - name: Test
         run: ls -la
+      - name: Check Processes
+        run: ps
