@@ -24,6 +24,6 @@ jobs:
         run: cd site/client && npm start &
 
       - name: Test
-        run: ls -la
-      - name: Check Processes
-        run: ps
+        run: |
+          wget http://localhost:3000/ | grep "Debate Rankings"
+          wget http://localhost:3001/users/rankings
