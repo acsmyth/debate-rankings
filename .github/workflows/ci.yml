@@ -8,13 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install nvm
-        run: curl https://raw.github.com/creationix/nvm/master/install.sh | sh && nvm --version
-      - run: nvm install 16 && nvm use 16 
       - name: npm install
-        run: cd site/client && npm install
-      - name: NODE_OPTIONS='--openssl-legacy-provider' npm run build
-        run: cd site/client && npm run build
+        run: |
+          curl https://raw.github.com/creationix/nvm/master/install.sh | sh
+          source ~/.nvm/nvm.sh
+          nvm install 16
+          nvm use 16
+          cd site/client
+          npm install
+          NODE_OPTIONS='--openssl-legacy-provider' npm run build
       - name: Start Backend
         run: cd site/server && npm start
       - name: Start Frontend
