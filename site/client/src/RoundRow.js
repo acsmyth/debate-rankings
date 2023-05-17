@@ -1,30 +1,26 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./RoundRow.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './RoundRow.css';
 
 class RoundRow extends React.Component {
-  isDebaterA = () =>
-    this.props.debater.code === this.props.round.debater_a_code;
+  isDebaterA = () => this.props.debater.code === this.props.round.debater_a_code;
 
   getOpponent = () => {
     let opponent = this.isDebaterA()
       ? this.props.round.debater_b_code
       : this.props.round.debater_a_code;
-    if (opponent === "NONE") {
+    if (opponent === 'NONE') {
+      // eslint-disable-next-line jsx-a11y/anchor-is-valid
       return <a />;
     }
-    const opponentForUrl = opponent.replaceAll(" ", "_");
-    const opponentForDisplay = opponent.replaceAll("_", " ");
-    const haveDataOnOpponent = this.props.allDebaters.some(
-      (debater) => debater.code === opponent
-    );
+    const opponentForUrl = opponent.replaceAll(' ', '_');
+    const opponentForDisplay = opponent.replaceAll('_', ' ');
+    const haveDataOnOpponent = this.props.allDebaters.some((debater) => debater.code === opponent);
     return haveDataOnOpponent ? (
-      <Link to={`/debater?code=${opponentForUrl}`}>
-        {"vs " + opponentForDisplay}
-      </Link>
+      <Link to={`/debater?code=${opponentForUrl}`}>{'vs ' + opponentForDisplay}</Link>
     ) : (
-      <Link style={{ pointerEvents: "none", textDecoration: "none" }}>
-        {"vs " + opponentForDisplay}
+      <Link style={{ pointerEvents: 'none', textDecoration: 'none' }}>
+        {'vs ' + opponentForDisplay}
       </Link>
     );
   };
@@ -39,17 +35,17 @@ class RoundRow extends React.Component {
 
   getResultWithColor = () => {
     const result = this.getResult();
-    if (result === "Bye") {
-      return <span style={{ color: "darkgreen" }}>Bye</span>;
+    if (result === 'Bye') {
+      return <span style={{ color: 'darkgreen' }}>Bye</span>;
     }
-    if (result === "Bye (Loss)") {
-      return <span style={{ color: "crimson" }}>Bye (Loss)</span>;
+    if (result === 'Bye (Loss)') {
+      return <span style={{ color: 'crimson' }}>Bye (Loss)</span>;
     }
     const withoutCommas = result
-      .replaceAll(" ", "")
-      .split(",")
+      .replaceAll(' ', '')
+      .split(',')
       .map((res) => {
-        const color = res === "W" ? "darkgreen" : "crimson";
+        const color = res === 'W' ? 'darkgreen' : 'crimson';
         return <span style={{ color: color }}>{res}</span>;
       });
     const res = [];
@@ -58,7 +54,7 @@ class RoundRow extends React.Component {
       if (first) {
         first = false;
       } else {
-        res.push(",");
+        res.push(',');
         res.push(<>&nbsp;</>);
       }
       res.push(element);
@@ -67,33 +63,33 @@ class RoundRow extends React.Component {
   };
 
   sameResult = (result) => {
-    if (result.includes("[")) {
+    if (result.includes('[')) {
       return result
-        .replaceAll('"', "")
-        .replaceAll("[", "")
-        .replaceAll("]", "")
-        .split(",")
-        .join(", ");
+        .replaceAll('"', '')
+        .replaceAll('[', '')
+        .replaceAll(']', '')
+        .split(',')
+        .join(', ');
     } else {
       return result;
     }
   };
 
   oppositeResult = (result) => {
-    if (result.includes("[")) {
+    if (result.includes('[')) {
       return result
-        .replaceAll('"', "")
-        .replaceAll("[", "")
-        .replaceAll("]", "")
-        .split(", ")
-        .map((res) => (res === "W" ? "L" : "W"))
-        .join(", ");
-    } else if (result === "Bye") {
-      return "Bye (Loss)";
-    } else if (result === "Bye (Loss)") {
-      return "Bye";
+        .replaceAll('"', '')
+        .replaceAll('[', '')
+        .replaceAll(']', '')
+        .split(', ')
+        .map((res) => (res === 'W' ? 'L' : 'W'))
+        .join(', ');
+    } else if (result === 'Bye') {
+      return 'Bye (Loss)';
+    } else if (result === 'Bye (Loss)') {
+      return 'Bye';
     } else {
-      return result === "W" ? "L" : "W";
+      return result === 'W' ? 'L' : 'W';
     }
   };
 
@@ -103,28 +99,25 @@ class RoundRow extends React.Component {
       : this.props.round.debater_b_elo_change;
     change = Math.round(change);
     if (change > 0) {
-      return <span style={{ color: "darkgreen" }}>{`+${change}`}</span>;
+      return <span style={{ color: 'darkgreen' }}>{`+${change}`}</span>;
     } else if (change < 0) {
-      return <span style={{ color: "crimson" }}>{change}</span>;
+      return <span style={{ color: 'crimson' }}>{change}</span>;
     } else {
       return null;
     }
   };
 
   getDate = () => {
-    const d = this.props.round.date.split("-");
+    const d = this.props.round.date.split('-');
     return `${d[1]}/${d[2]}/${d[0]}`;
   };
 
   getBackgroundColor = () =>
-    this.props.rowIndex % 2 === 0 ? "rgb(211,211,211)" : "rgb(224,224,224)";
+    this.props.rowIndex % 2 === 0 ? 'rgb(211,211,211)' : 'rgb(224,224,224)';
 
   render() {
     return (
-      <div
-        className="round_row"
-        style={{ backgroundColor: this.getBackgroundColor() }}
-      >
+      <div className="round_row" style={{ backgroundColor: this.getBackgroundColor() }}>
         <span className="result">{this.getResultWithColor()}</span>
         {this.getOpponent()}
         <span className="round_name">{this.props.round.round}</span>

@@ -1,10 +1,10 @@
-import React from "react";
-import RoundRow from "./RoundRow";
-import Header from "./Header";
-import "./DebaterPage.css";
-import { API_BASE_URL } from "./utils";
-import { IconButton, Tooltip } from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
+import React from 'react';
+import RoundRow from './RoundRow';
+import Header from './Header';
+import './DebaterPage.css';
+import { API_BASE_URL } from './utils';
+import { IconButton, Tooltip } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
 class DebaterPage extends React.Component {
   state = {
@@ -30,7 +30,7 @@ class DebaterPage extends React.Component {
           <span>Rank: N/A</span>
           <Tooltip
             title="Debaters are only ranked after participating in at least 10 rounds"
-            style={{ marginBottom: "4px" }}
+            style={{ marginBottom: '4px' }}
           >
             <IconButton>
               <InfoIcon />
@@ -49,11 +49,11 @@ class DebaterPage extends React.Component {
   };
 
   hasAllInfo = () => {
-    return this.state.debater.name !== "" && this.state.debater.school !== "";
+    return this.state.debater.name !== '' && this.state.debater.school !== '';
   };
 
   componentDidMount() {
-    const codeParam = new URLSearchParams(window.location.search).get("code");
+    const codeParam = new URLSearchParams(window.location.search).get('code');
     fetch(`${API_BASE_URL}/users/get_rounds?code=${codeParam}`)
       .then((res) => res.json())
       .then((rounds) => {
@@ -115,8 +115,7 @@ class DebaterPage extends React.Component {
                     allDebaters={this.state.allDebaters}
                   />
                   {index + 1 < this.state.rounds.length &&
-                  this.state.rounds[index + 1].tournament_id !=
-                    round.tournament_id ? (
+                  this.state.rounds[index + 1].tournament_id !== round.tournament_id ? (
                     <>
                       <br /> <br />
                     </>
