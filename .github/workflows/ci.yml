@@ -26,4 +26,4 @@ jobs:
       - name: Test
         run: |
           wget http://localhost:3000 | grep "Debate Rankings"
-          wget http://localhost:3001/users/rankings
+          wget http://localhost:3000/users/rankings
