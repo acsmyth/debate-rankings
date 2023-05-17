@@ -16,6 +16,8 @@ jobs:
           cd site/client
           npm install
           npm run build
+          cd ../server
+          npm install
       - name: Start Backend
         run: cd site/server && npm start
       - name: Start Frontend
