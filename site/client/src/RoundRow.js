@@ -10,7 +10,7 @@ class RoundRow extends React.Component {
       ? this.props.round.debater_b_code
       : this.props.round.debater_a_code;
     if (opponent === 'NONE') {
-      // eslint-disable-next-line jsx-a11y/anchor-is-valid jsx-a11y/anchor-has-content
+      // eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/anchor-has-content
       return <a />;
     }
     const opponentForUrl = opponent.replaceAll(' ', '_');
