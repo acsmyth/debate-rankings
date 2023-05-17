@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install nvm
-        run: curl https://raw.github.com/creationix/nvm/master/install.sh | sh && source ~/.nvm/nvm.sh
+        run: curl https://raw.github.com/creationix/nvm/master/install.sh | sh && source ~/.nvm/nvm.sh && nvm --version
       - run: nvm install 16 && nvm use 16 
       - name: npm install
         run: cd site/client && npm install
