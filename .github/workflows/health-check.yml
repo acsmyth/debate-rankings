@@ -1,0 +1,11 @@
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: wget https://www.debate-rankings.com/
+      - run: wget https://www.debate-rankings.com/api/users/rankings
+      - run: wget https://www.debate-rankings.com/api/users/all_debaters
