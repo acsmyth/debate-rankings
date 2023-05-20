@@ -2,7 +2,9 @@ import json
 import os
 
 
-with open('constants.json', 'r') as f:
+script_dir = os.path.dirname(os.path.realpath(__file__))
+
+with open(f'{script_dir}/constants.json', 'r') as f:
   CONSTANTS = json.loads(f.read())
 
 def scp(local_path, remote_path, recursive=False):
