@@ -1,3 +1,5 @@
+![Health Check](https://github.com/acsmyth/debate-rankings/actions/workflows/health-check.yml/badge.svg)
+
 # Debate Rankings
 
 https://www.debate-rankings.com
