@@ -1,8 +1,4 @@
-# Debate Rankings
-
-<div style="align:right;">
-  <img src="https://github.com/acsmyth/debate-rankings/actions/workflows/health-check.yml/badge.svg" />
-</div>
+# Debate Rankings <img align="right" src="https://github.com/acsmyth/debate-rankings/actions/workflows/health-check.yml/badge.svg" />
 
 https://www.debate-rankings.com
 
