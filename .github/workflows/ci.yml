@@ -24,7 +24,12 @@ jobs:
       - name: Start Frontend
         run: cd site/client && npm start &
 
-      - name: Test
+      - name: Test - Liveness
         run: |
           wget http://localhost:3000
           wget http://localhost:3000/users/rankings
+      
+      - name: Test - Cypress
+        run: |
+          cd site/client
+          npx cypress run
